@@ -1,0 +1,371 @@
+/*Proje: içerisinde amaca dair çözümler getiren kodsal çalışmaların yapıldığı bir bütün
+Solution: içerisinde bir veya birden fazla proje barındıran bir evrensel kümedir.
+
+Dotnet CLI için dotnet --help ile bakabilirsin her şeye
+dotnet new projectType --name projectName
+bu komutu terminale yazarak istediğin şekilde C# uygulaması oluşturabilirsin
+
+Dotnet Clı: .NET komut satırı arayüzüdür.
+.NET uygulamaları geliştirmeyi,çalıştırmayı,oluşturmayı ve yayınlamayı sağlar.
+.NET SDK ile gelir.
+Dotnet CLI komutlar: dotnet [komut]
+help : Tüm komutları açıklamalarıyla görmeye yarar
+new : Proje oluşturmaya yarar ve şu formattadır : dotnet new projectType --name projectName
+restore : Uygulamada kütüphane kullanmak istiyorsak bunun ile kütüphaneleri çekebiliriz.
+build : Projeyi derler ve sonuç olarak .exe ve .dll çıktıları verir. Derlemeden önce projeyi restore eder. \bin\Debug\net5.0 dizinine çıktı verir
+publish : Projeyi yayınlanabilir formata getirir.
+run : Uygulamayı derler ve çalıştırır.
+
+dll ve exe farkı. İkisi de windowsa özgü uzantılardır ve sadece windows işletim sisteminde kullanılabilir.Exe son kullanıcının
+yani bir insanın kullanımı içindir. dll ise bir yazılımın kullanabilmesi içindir.
+
+Paket (NuGet Package): İnternetten, yani nuget.org gibi depolardan indirilen dış kaynaklı hazır kütüphanelerdir.
+Referans (Reference): Kendi yazdığınız yerel başka bir proje (.csproj) veya bilgisayarınızdaki harici bir .dll dosyasıdır.
+
+Proje Modifikasyon Komutları
+add package:Uygulamaya nugetten paket/kütüphane yüklememizi sağlar.
+add reference:Uygulamaya fiziksel bir referans eklememizi sağlar. dotnet add [source_project.csproj] reference [target_project.csproj]
+remove package:Kütüphane siler dotnet remove package [package_name]
+remove reference: Referans silmemizi sağlar dotnet remove reference [reference_name]
+List reference: Referansları listeleyebilirsin dotnet list reference
+
+
+Main fonksiyonu uygulama açıldığında ilk tetiklenen fonksiyondur.
+main fonksiyonunun syntaxı : static void Main(string[] args){}
+eğer sen gidip terminale dotnet run ali yazarsan ve senin kodunda args[0] ile ilgili bir işlem varsa o işlemin yerine ali yazılır
+sen aslında parametre vermiş olursun çünkü main de bir fonksiyon ve parametre ile başlatılabilir.
+
+Region:Kod dosyasını kategorik hale getirmemizi sağlayan bir ön işlemci komutudur.Developerın yazdığı kodu daha iyi kategorize 
+etmesini ve kod okunabilirliğini arttırır*/
+
+#region Kingpro
+    
+#endregion
+
+#region kkkkkk    
+#endregion
+
+/*
+Todo: Task listte çıkmasını sağlar mesela bir noktada bir kod yazılıcak onu direkt bulabilmemizi sağlar
+//todo burada ali yaz.
+şeklinde kullanabiliriz.
+
+Primitive type (İlkel veri tipi :Programlama dillerinde bellekte doğrudan bir değeri (sayıyı, karakteri veya mantıksal durumu)
+tutan, başka bir nesneye veya metoda dayanmayan en temel veri türleridir. Primitive türlerin hepsi bunlardır:
+int / int32: Tam sayıları tutar (Örn: 10, -5).
+long / int64: Daha büyük tam sayıları tutar.
+float / single: Ondalıklı sayıları tutar (Tek duyarlı).
+double: Daha büyük veya hassas ondalıklı sayıları tutar (Çift duyarlı).
+char: Tek bir karakteri tutar (Örn: 'a').
+bool: Mantıksal değerleri tutar (true veya false).
+byte: 8-bitlik işaretsiz tam sayıları tutar.
+
+
+Bir scope içerisinde aynı isimle birden fazla değişken tanımlanamaz
+Programatik keywordler değişken tanımlanırken isim olarak kullanılmaz. Tek şartı başına @ getirilmesi
+string int;   yanlış
+string @int   doğru
+
+Bir sayı atandığı zaman varsayılan olarak int olarak atanır ondalıklı sayı atandığında ise varsayılan olarak doubledır
+float pi = 3.14f veya 3.14F olarak atanır
+double pi= 3.14d veya 3.14D olarak atanır fakat varsayılan olduğu için d veya Dyi yazmak zorunda değiliz
+decimal pi = 3.14m veya 3.14M olarak atanır
+
+Tuple:Tek bir syntax üzerinde birden fazla değişken tanımlamamızı sağlayan bir nesnedir.
+(int a,string b,decimal e,float f,variable_name variable_type) x = (10,Ali,3.12321M,2133.21131f,variable_value);
+
+Literal düzenlemeler
+int x = 100000000 
+bunu okuyamadığımız için şöyle yapabiliriz
+int x = 100_000_000
+
+Değişken Türüne Uygun Default Değer Atama
+Tüm sayı değerleri = 0;
+string = null;
+bool = false;
+char = \0;
+referans = null;
+
+Bu değerler oluşturuludğunda default olarak bu şekilde atanır.Default değerini direkt vermek istiyorsanız bir değişkene 
+şu şekilde yazabilirsiniz.
+bool x = default(bool);
+int y = default(int);
+string z = default(string);
+char a = default(char);
+
+ya da direkt şöyle yapabilirsin 7.1 ile gelen güncellemeyle
+bool x = default;
+int y = default;
+string z = default;
+char a = default;
+
+Kullanmazsın ama kod okurken görürsen şaşırma aklında bulunsun çok çok zor ihtimal ama yine de 
+!!!!!!Bu default değer kısmı sadece class içerisinde vardır.Main içinde tanımlayıp bir değer vermezsen değişkenler default
+değer almaz işlem yapamazsın!!!!!!
+
+Scope(Kapsam):Scopelar {   } süslü parantezler içerisinde olan kısımlara denir.Aynı scope içerisinde aynı değişken adı
+ile başka bir değişken yazılamaz fakat farklı scopelar içerisinde yazılabilir.Bir scope içerisinde tanımlanan değişkene tanım
+-landıktan sonra o scope içerisinde  her yerden erişilebilir. Mesela şöyle bir yapımız olsun
+
+{ Scope 1
+int c
+int b
+    {
+    int a = c + b;
+    }
+char c     Bu hata verir
+}
+{ Scope 2
+string c   Ama farklı scopelar içerisinde tanımlandığı için bu hata vermez
+}
+
+
+Global Değişken:
+Ekstra değişken tanımlama varyasyonu(Aynı türden olmak zorundalar.)
+int a = 5;
+int b = 10;
+yerine 
+int a = 5, b = 10;
+veya
+int a;
+int b; 
+yerine
+int a,b;
+
+
+Const: Değiştirelemeyen sabit sayı atanır.
+Readonly:
+Static:
+
+
+Değişkenler arası değer atama durumları:
+Deep Copy:Eldeki veri çoğalır/klonlanır. 1 arabanın seri üretimde çoğaltılarak bir sürü araba elde edilmesi gibi.Default olarak
+deep copy yapılır değişkenler birbirine atanırken.
+int a = 5;
+int b = a;
+a = a * 5;
+
+Bu sonuçta a ve b klonlama yapıldığı için yapılan değişikliklerin b değerine yansımaması lazım. Yansımıyorsa deep copydir.
+a        25
+b        5
+Son durumda böyle olması lazım.
+
+Shallow Copy:Değişkenler arası değer atamalarında değeri klonlamak/çoğaltmak yerine var olanı birden fazla referansla işaret
+-lemeye dayalı kopyalama yöntemi. Yaptığı şey aslında a = 5 i kopyalama kısmında 5i değil a'nın karşısındaki value adresinin
+değerini tutmak.Yani a = a * 5; işlemi yapıldığında a 25 olacak fakat b de 25 olacak çünkü b a'nın değerini referans tutuyor.
+
+
+
+Object: Tüm türleri karşılayabilen bir türdür. Tüm türler ondan türemiştir aslında 
+string  =  "Ahmet" örneğinde sol kısımda ne tür yazıyorsa sağ kısımda ona göre bir değer yazmalıdır ya mesela int = "Ali" 
+yazılamaz ama object = Tüm değer türleri yani object = "Ali" de olur object = 3623.3232 de olur fark etmiyor hepsini kapsar.
+
+Boxing:Object türdeki bir değişkene herhangi bir türdeki değişkeni gönderme işlemine denir.
+int yas = 28
+object kutu = yas
+
+Boxing işlemi neticesinde ilgili değer objectin içerisinde kendi türüyle saklanır. Fakat kutu değişkeni artık 28 değerini biz
+-lere object türünde getirecektir.kutu değişkeni içinde (object)28 olarak tutulduğu için artık onunla türe özgü işlemler yapamam
+int değeri ile sayısal işlem yapılamaz gibi çünkü o artık bir nesneye dönüştü.
+Artık türe özel işlemler yapabilmek için unboxing işlemi yapmamız gerekir.
+
+Cast operatörü:Genellikle tür dönüşümlerinde kullanılan bir operatördür.(type)value şeklinde kullanılır 3 farklı amacı vardır.
+1-)Boxing -> Unboxing
+2-)Bilinçli Tür Dönüşümü
+3-)Char -> Int || Int -> Char dönüşümünde
+Polimorfizm durumunda base class referansıyla işaretlenen bir nesneyi kendi türünde de elde edebilmemizi sağlamaktadır.
+
+Cast operatörü Boxingde nasıl kullanılır
+Boxing edilmiş bir veriyi kendi türünde elde etmemizi sağlayan operatördür. () olarak ifade edilir.
+Object olan değişkenin solunda o objecti hangi türe dönüştürmek istiyorsak o türü parantez içine alarak kullanırız.
+()object
+bu örnekte (int)kutu bu şekilde kullanılır
+
+Unboxing:Boxing edilmiş veriyi eski haline kendi türüne dönüştürme işlemidir.Cast operatörü ile yapılır.Unboxing sırasında
+verinin asıl türü neyse o bildirilmelidir.
+Unboxing Örnek:
+int gercekDeger = (int)kutu; // Kutudan int olarak geri çıkardık
+int sonuc = gercekDeger + 2; // Artık işlem yapabilirsiniz!
+Console.WriteLine(sonuc);    // Çıktı: 30
+
+
+
+Var keyword:Tutulacak değerin türüne uygun bir değişken tanımlayabilmek için kullanılan keyword.Kendisine atanan türün değerine
+bürünür.Compiler tarafından değerin türüne göre otomatik büründürülen bir keyworddür.Lakin bir tür değildir.
+Derleme aşamasında compile edilince olması gereken türe dönüşür var a = 5 yazılır compile süresinde int a = 5 olarak saklanır
+
+Dynamic keyword: Var ile farklı olarak ise uygulamanın runtimeında dönüşür int a = 5 gibi depolanmaya
+
+var a = 5;   kodu yazarken daha çalıştırmadan üstüne gelip türüne bakarsanız int32 yazar
+dynamic _a = 5;     kodu yazarken daha çalıştırmadan üstüne gelip türüne bakarsanız dynamic yazar.
+
+Varda sen eğer gelip de 
+var a = 5
+Console.Writeline(a.GetType());
+a = "Ahmet"
+Console.Writeline(a.GetType());
+böyle bir kod yazarsan sana daha compile etmeden hata verir ama aynısını dynamic için yaparsan
+dynamic a = 5
+Console.Writeline(a.GetType());
+a = 3.14F
+Console.Writeline(a.GetType());
+Çıktı olarak
+System.String
+System.Float görürsün yani bildiğin tür değiştirmiş olur.
+
+Nerelerde kullanılır: Uzaktan gelen türü bilinmeyen datanın bunu karşılayıp işlem yapmak istiyorsan yapılabilir.
+!!!!Varda bu şekilde yapılmaz çünkü uzaktan gelen dataları işleyemezsin çünkü tanımlandığı an türün belirlenmesi lazım.
+
+
+
+
+Tür dönüşümleri:Değişken türlerini dönüştürebilmemizi sağlar. Uzaktan veri gelebilir ve gelen veriyi bizim istediğimiz şekilde
+kullanmak için dönüştürebiliriz.
+
+int 123 -> chara dönüştürebilirsin bunda bir istisna var.
+String veriyi hedef türe dönüştürme:
+Parse metodu: sadece stringi diğer türlere dönüştürürken kullanılabilir.
+string x = "1111";
+short.Parse(x);   /bu komutla x değeri artık integer olur sen xi string olarak tutmak için ise şunu yazarsın:
+short x2 = short.Parse(x);
+Convert metodu
+string x = "1111";
+int x2 = Convert.ToInt32(x);
+
+Diğer türlerin metine dönüşümü:
+int x = 1111;
+string x2 = Convert.ToString(x);
+
+Sayısal ifadelerin kendi aralarında tür dönüşümü:
+Bir sayısal değer eğer kendinden daha büyük türlere dönüşüm sağlarsa herhangi bir kısıt olmayacağı için bilinçsiz tür dönüşümü
+denir (short -> int)
+Bir sayısal değer eğer kendinden daha küçük türlere dönüşüm sağlarsa depolama kısıtı olacağı için bilinçli tür dönüşümü
+denir (int -> short)
+
+Bilinçsiz tür dönüşümü:Küçük veri tipine sahip bir değerin, veri kaybı riskinin olmadığı durumlarda kendiliğinden 
+(ekstra kod yazmadan) daha büyük veri tipine atanmasıdır.
+Örnek: byte türündeki bir değişkenin int içine atılması
+byte kucukSayi = 100;
+int buyukSayi = kucukSayi;     Bilinçsiz (otomatik) dönüşüm
+
+Bilinçli Tür Dönüşümü (Explicit Conversion) //////Cast Operatörü burada da kullanılır.
+Tanım: Büyük veri tipindeki bir değerin, veri kaybı (veya taşma) riski barındırmasına rağmen geliştiricinin 
+sorumluluk alarak zorla küçük veri tipine dönüştürülmesidir ((hedef_tip) operatörü kullanılır).
+Örnek: int türündeki bir sayının byte türüne dönüştürülmesi.
+int buyukSayi = 250;
+byte kucukSayi = (byte)buyukSayi;     Bilinçli (parantez ile zorunlu) dönüşüm
+
+Bilinçli Tür Dönüşümünde Kritik Durumlar
+Tanım: Değer aralığından daha büyük bir sayı, veri kapasitesi küçük olan bir tipe bilinçli olarak dönüştürülürse, 
+bellek sınırları aşıldığı için veri kaybı / başa sarma (overflow) meydana gelir.
+//byte maksimum 255 alabilir; 256 atandığında değer sıfırdan (0 veya -128 imzalı/imzasız durumuna göre) tekrar saymaya başlar.
+int sayi = 256;
+byte sonuc = (byte)sayi;    Kritik durum: Bellek taşması olur, sonuç 0 çıkar!
+
+
+Bilinçli Tür Dönüşümlerinde Checked UnChecked Kullanımı
+checked //////Eğer taşma yaşanırsa runtimeda uyarı veriyor.
+{
+
+    int buyukSayi = 250;
+    byte kucukSayi = (byte)buyukSayi;
+
+}
+
+unchecked //////Eğer taşma yaşanırsa runtimeda uyarı vermeden görmezden gelerek devam eder.Default bu zaten.
+{
+
+    int buyukSayi = 250;
+    byte kucukSayi = (byte)buyukSayi;
+
+}
+
+Booldan Sayısal türe dönüştürme:
+bool true : 1'e dönüşür.
+bool false : 0'a dönüşür.
+
+Sayısal Değerlerden bool türüne dönüştürme:
+herhangi bir sayısal tür = 0 : bool false
+herhangi bir sayısal tür = 0 harici herhangi bir sayı(-23,30) : bool true
+
+Char türünün sayısal değere dönüştürülmesi(ASCII):
+Char türünün sayısal değere dönüştürürken char karakterinin ASCII değeri sayısal olduğu için o sayısal değeri yazarız.
+char a = 'a';
+int a2 = (int)a;
+Console.Writeline(a2);    /Output 97('a' karakterinin ASCII değeri)
+
+
+Sayısal türlerin char değerine dönüştürülmesi(ASCII):
+Aynı şekilde sadece tam tersi
+int a = 97;
+Console.Writeline((char)a);    /Output a(97 karakterinin ASCII değeri)
+
+
+
+
+Operatörler
+Aritmetik operatörlerde küçük ve büyük veri türleri çarpılırsa büyük veri türünce yazılır.Bilinöçsiz dönüşüm yapılır.
+int x = 5;
+short y = 2;
+int sonuc = x * y;
+
+İSTİSNA !!!!!! :Normalde iki aynı tür üstünden bir aritmetik işlem yapıldığı zaman normalde aynı tür döner. short + short = short gibi fakat
+byte bir istisnadır byte + byte = int olarak döner.
+İşlem önceliği yazılımda da kural olarak kullanılır.
+
+Mantıksal operatörler
+&& and
+|| or
+^  xor
+
+Arttırma azaltma operatörü
+++i : Önce i değerini 1 arttırır ve sonra döndürür.
+i++ : Önce i değerini döndürür sonra 1 arttırır.CW çıktısında değişmemiş gözükür ama aslında 1 arttırılmış olur.
+Console.Writeline(i++);   /Output 5 Bellekte 6 yazar.
+Console.Writeline(++i);   /Output 6 Bellekte 6 yazar
+
+Ternary Operatörü
+.....şart/durum....?..........:...........
+Şartımızı söylüyoruz ? Eğer doğruysa bu kod çalışır : Eğer yanlışsa bu kod çalışır
+Geriye dönecek değerin ikisinin de aynı türde olmalıdır.
+string mesaj = medeniHal == true ? "Evlilere özel kampanya..." : "Bekarlara özel kampanya";
+
+Ternary Operatöründe Birden Fazla Değer Kullanmak:
+Notu 75den küçük olanlara C, 75 olanlara B ve 75den büyük olanlara A döndürücek nasıl kullanırsın
+int n= 75; 
+int notDurumu = n < 75 ? C : (n == 75 ? B : C);
+
+
+
+Sizeof operatörü:Verilen türün bellekte kaç byte kapladığını int olarak döndürür.
+sizeof(variable type) bu şekilde kullanılır 
+
+Typeof operatörü:Verilen türün veya değerin türünü getirir. O tür ile ilgili bilgi edinmek için kullanılan operatördür.
+Type t = typeof(int);
+Console.Writeline(t.IsPrimitive);
+Console.Writeline(t.IsClass);
+Console.Writeline(t.IsValueType);
+Console.Writeline(t.Name);
+
+
+Is operatörü:Boxinge maruz kalmış bir değerin gerçek value typeını kontrol edebilmek için kullanılan operatör.
+is operatörü denetleme durumunda olduğu için değeri true veya false olarak döndürecektir.If yapılanmasında çok kullanılır.
+object x = true;
+Console.Writeline(x is bool);         True döner
+Console.Writeline(x is int);          False döner.
+
+
+
+Test
+
+
+
+
+
+
+
+
+
+
+
+*/
