@@ -12,7 +12,8 @@ Dotnet CLI komutlar: dotnet [komut]
 help : Tüm komutları açıklamalarıyla görmeye yarar
 new : Proje oluşturmaya yarar ve şu formattadır : dotnet new projectType --name projectName
 restore : Uygulamada kütüphane kullanmak istiyorsak bunun ile kütüphaneleri çekebiliriz.
-build : Projeyi derler ve sonuç olarak .exe ve .dll çıktıları verir. Derlemeden önce projeyi restore eder. \bin\Debug\net5.0 dizinine çıktı verir
+build : Projeyi derler ve sonuç olarak .exe ve .dll çıktıları verir. Derlemeden önce projeyi restore eder. 
+\bin\Debug\net5.0 dizinine çıktı verir
 publish : Projeyi yayınlanabilir formata getirir.
 run : Uygulamayı derler ve çalıştırır.
 
@@ -309,7 +310,8 @@ int x = 5;
 short y = 2;
 int sonuc = x * y;
 
-İSTİSNA !!!!!! :Normalde iki aynı tür üstünden bir aritmetik işlem yapıldığı zaman normalde aynı tür döner. short + short = short gibi fakat
+İSTİSNA !!!!!! :Normalde iki aynı tür üstünden bir aritmetik işlem yapıldığı zaman normalde aynı tür döner. 
+short + short = short gibi fakat
 byte bir istisnadır byte + byte = int olarak döner.
 İşlem önceliği yazılımda da kural olarak kullanılır.
 
@@ -355,8 +357,76 @@ Console.Writeline(x is bool);         True döner
 Console.Writeline(x is int);          False döner.
 
 
+Is null operatörü:Bir değişkenin null olup olmadığını kontrol etmek için kullanılan operatördür. 
+Eğer değişken null ise true döner, değilse false döner.Değer türlü değişkenlerde kullanılamaz. Sadece referans türlerinde 
+kullanılır.
 
-Test
+Is not null operatörü:Bir değişkenin null olup olmadığını kontrol etmek için kullanılan operatördür. 
+Eğer değişken null değilse true döner, null ise false döner.Değer türlü değişkenlerde kullanılamaz. Sadece referans türlerinde 
+kullanılır.
+
+
+As operatörü:Cast operatörünün unboxing işlemine alternatif olarak üretilen bir operatördür.Cast operatörü gibi boxing işleminden
+önceki türü neyse unboxing yaparken de o tür ile unboxing yapılması gerekir. Türüne uygun şekilde as edilmesi zorunlu değildir.
+Eğer ki tür uygunsa unboxing işlemi başarıyla yapılacak.Eğer tür uygun değilse hata vermeyecek null değer döndürecektir.
+Yazılımın devam edebilmesini sağlar hata vermeyerek.
+object x = 123;
+Type y = x as Type;
+int y = x as int;
+
+Nullable operatör:Değer türlü operatörler normal şartlarda null değer almazlar.(Not nullable)
+Bir değer türlü değişkenin null değer alabilmesi için nullable operatörü kullanılır. Nullable operatörü ? ile ifade edilir.
+int? x = null;
+bool? b = null;
+Prototip:degisken_turu? degisken_adi = null;
+Artık is null ve is not null operatörleri ile bu değişkenin null olup olmadığını kontrol edebilirsin.
+
+as örneklendirme:
+object x = 123;
+int? y = x as int?;  // Nullable int türüne dönüştürme
+
+Null Coalescing Operatörü:Bir değişkenin null olup olmadığını kontrol etmek için kullanılan operatördür. 
+Eğer değişken null ise null coalescing operatörünün sağ tarafındaki değeri döndürür, null değilse değişkenin 
+kendisini döndürür.
+
+string a = null;
+string b = a ?? "Varsayılan Değer"; // Eğer a null ise b değeri döner değil ise Varsayılan Değeri alır.
+Null coalescing operatöründe her iki tarafın da aynı türde olması gerekir. Eğer farklı türler olursa hata verir.
+a ile Varsayılan Değer aynı olucak yani.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
