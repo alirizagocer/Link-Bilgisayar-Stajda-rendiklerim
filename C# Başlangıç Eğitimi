@@ -396,16 +396,43 @@ a ile Varsayılan Değer aynı olucak yani.
 
 
 
+Switch Case:Sadece eşitlik durumuna göre bir şart varsa switch kullanılabilir.Eger bir case ile esitlik saglanirsa diger caselere bakmaksizin direkt olarak diger case blogu ile aradaki 
+kodlar saglanip switch case yapisindan cikar
+switch (deger)    //deger dedigi sey surece esitlenecek deger
+{
+    case value1:
+    buraya eger value1 degeri gelirse neler yapilacagini yazariz
+    break ya da continue
+    case :
+    break ya da continue
+    default: Eger hicbir esitlik saglanmazsa buradaki kod calisir. Default tamamen opsiyonel zorunlu degildir.
+}
 
+int menu = 2
+switch (menu)      //Burada degerin veri turu neyse casein yanindaki seceneklerin de veri turu o olmali menu int diye case 1 case 2 yazdik 1 ve 2 yerine string bir deger yazamazdik!!
+{                  //Switch değerindeki(menu) sabit sayı veya değişken olabilirken case bloklarındaki değerler değişken olamaz 1 yerine x falan diyemezsin "x" diye isim verebilirsin sadece
+    case 1:
+    Toplama
+    case 2:
+    Cikarma
+    case 3:
+    Bolme
+}
 
+Switch Case'de When Keyword'ü
+Switch yapılanmasında sadece elimizdeki değerin eşitlik durumunu kontrol edebilirim.Fakat bunun dışında eğer başka şartları da kontrol etmek istersek when keywordünü kullanabiliriz.
+int satisTutari = 100
+switch (satisTutari)
+{
+    case 100 when (3 == 5);  //3 = 5  olmadığı için tetiklenmez
+    
+    break;
+    case 100 when (3 == 3);  //3 = 3 olduğu için tetiklenir
+    
+    break;
+}
 
-
-
-
-
-
-
-
+Switch Case'de Goto Keyword'ü
 
 
 
