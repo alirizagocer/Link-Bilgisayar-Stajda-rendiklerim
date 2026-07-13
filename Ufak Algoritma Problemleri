@@ -1,0 +1,150 @@
+#region Problem 1
+
+
+//Klavyeden iki ürünün fiyatı girildiğinde toplam fiyatı 200 Tl'den fazla ise,2.üründen %25 indirim yaparak ödenecek tutarı gösteren uygulamayı yapalım
+Console.Write("Lütfen 1.ürünün fiyatını giriniz: ");
+int urun1= int.Parse(Console.ReadLine());
+Console.Write("Lütfen 2.ürünün fiyatını giriniz: ");
+int urun2 = int.Parse(Console.ReadLine());
+//int urunlerinToplamFiyati = urun1 + urun2; Bunu yazarsak ramde boş yere yer tahsis etmiş oluruz basit bir işlem direkt if bloğuna şart olarak yazılabilir.Fakat burda 2 defa yazıldı o yüzden
+//değişken atayarak da yapabiliriz son sonucu yazdırarak tekrara düştüğümüz için
+if (urun1 + urun2 > 200)
+{
+    urun2 = urun2 * 0.75;
+}
+else 
+{
+    urun2 = urun2;
+}
+Console.WriteLine($"Ödenecek toplam tutar: {urun1 + urun2}");
+#endregion
+
+#region Problem 2
+//Belirlenen kullanıcı adı ve şifre doğru girildiğinde "Giriş Başarılı" yanlış girildiğinde "Kullanıcı adı veya şifre hatalı" mesajı veren Console uygulamasını yapalım.
+Console.Write("Kullanıcı adı giriniz.");
+string kullaniciAdi = Console.ReadLine();
+Console.Write("Şifre giriniz.");
+string sifre = Console.ReadLine();
+if (kullaniciAdi == "Ali" && sifre == "4444")
+    Console.WriteLine("Giriş Başarılı");
+else
+    Console.WriteLine("Kullanıcı adı veya şifre hatalı");
+//Ekstra kritik notları:Bu yapılandırmayı biz switch ile de kurabiliriz eşitlik durumu kontrol edildiği için ayrıca ben scope kullanmadan yaptım tek satır olduğu için ama scopelu da yapılabilir.
+Console.WriteLine(kullaniciAdi == "Ali" && sifre == "4444" ? "Giriş Başarılı" : "Kullanıcı adı veya şifre hatalı"); //Bu yapı ile koca if bloğunu tek satırda yazabilirim.
+#endregion
+
+#region Problem 3
+//Kullanıcıdan alınan iki sayının ve yapılacak işlem türünün seçilmesiyle sonucu hesaplayan programı yazalım (Hesap Makinesi)
+Console.Write("Lütfen istediğiniz işlemi seçiniz : ");
+Console.Write("------------MENU--------------");
+Console.Write("1-) Toplama");
+Console.Write("2-) Çıkarma");
+Console.Write("3-) Çarpma");
+Console.Write("4-) Bölme");
+string secim = Console.ReadLine();
+Console.Write("Lütfen 1.sayıyı giriniz: ");
+int sayi1 = int.Parse(Console.ReadLine());
+Console.Write("Lütfen 2.sayıyı giriniz : ");
+int sayi2 = int.Parse(Console.ReadLine());
+int sonuc;
+switch (secim)
+{
+    case "1":
+        sayi1 + sayi2 = sonuc;
+        Console.WriteLine("1.sayı ile 2.sayının toplamı = " , sonuc);
+        break;
+    case "2":
+        sayi1 - sayi2 = sonuc;
+        Console.WriteLine("1.sayı ile 2.sayının çıkartılması =  " , sonuc);
+        break;
+    case "3":
+        sayi1 * sayi2 = sonuc;
+        Console.WriteLine("1.sayı ile 2.sayının çarpımı = " , sonuc);
+        break;
+    case "4":
+        if (sayi2 != 0) {
+            sayi1 + sayi2 = sonuc;
+            Console.WriteLine("1.sayı ile 2.sayının bölümü = " , sonuc);
+            break;
+        }
+        else
+            Console.WriteLine("Bölüm 0 olamaz");
+    default:
+        Console.WriteLine("Lütfen seçeneklerde olan sayıyı seçiniz.");
+        continue;
+}
+//Burada if else de kullanabiliriz fakat en mantıklı olan switch expression kullanmak ama şu anki değişken yapısını değiştirerek çok daha kısa,okunabilir bir yapı olmuş olur.Ya da şöyle bir
+//yapı kullanabiliriz.Fakat böyle bir yapı eklememiz gerekir menü kısmı yerine.
+Console.Write("Hangi işlemi yapmak istersiniz(+,/,*,-)");
+char islem = char.Parse(Console.ReadLine());
+Console.WriteLine(islem = "+" ? sayi1 + sayi2 : (islem = "-" ? sayi1 - sayi2 : (islem = "/" ? sayi1 / sayi2 : sayi1 * sayi2)));
+#endregion
+
+#region Problem 4
+//Girilen sayının değeri 10 değilse ekrana "sayı yanlış" yazdıralım.
+Console.Write("Lütfen sayı giriniz : ");
+int sayi = int.Parse(Console.ReadLine);
+if (sayi != 10)
+    Console.WriteLine("Sayı yanlış");
+//else de yazılabilir ya da scope kullanarak da if else yazılabilir.
+//Switch expression da kullanabilirsin switch de ama switch expression daha iyi
+//Ternary operatörünü de kullanabiliriz.
+Console.WriteLine(sayi == 10 ? "" : "Sayı yanlış");
+#endregion
+
+#region Problem 5
+//Girilen sayının negatif ya da pozitif olduğunu gösteren programı yazalım.
+Console.Write("Lütfen sayı giriniz : ");
+int sayi = int.Parse(Console.ReadLine());
+
+if (sayi > 0)
+    Console.WriteLine("Girdiğiniz sayı pozitif");
+else 
+    Console.WriteLine("Girdiğiniz sayı negatif");
+
+//2 yolla da yapılabilir.
+
+Console.Write("Lütfen sayı giriniz : ");
+int sayi = int.Parse(Console.ReadLine());
+string sonuc;
+if (sayi > 0)
+    sonuc = "Pozitif";
+else 
+    sonuc = "Negatif";
+    Console.WriteLine("Girdiğiniz sayı " , sonuc);
+#endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

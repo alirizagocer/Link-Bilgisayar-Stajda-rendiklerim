@@ -1,3 +1,4 @@
+#region Giriş ve dotnet yapısı(Dotnet CLI)
 /*Proje: içerisinde amaca dair çözümler getiren kodsal çalışmaların yapıldığı bir bütün
 Solution: içerisinde bir veya birden fazla proje barındıran bir evrensel kümedir.
 
@@ -37,14 +38,10 @@ eğer sen gidip terminale dotnet run ali yazarsan ve senin kodunda args[0] ile i
 sen aslında parametre vermiş olursun çünkü main de bir fonksiyon ve parametre ile başlatılabilir.
 
 Region:Kod dosyasını kategorik hale getirmemizi sağlayan bir ön işlemci komutudur.Developerın yazdığı kodu daha iyi kategorize 
-etmesini ve kod okunabilirliğini arttırır*/
-
-#region Kingpro
-    
+etmesini ve kod okunabilirliğini arttırır*/    
 #endregion
 
-#region kkkkkk    
-#endregion
+#region Veri türleri,var ve dynamic keywordü ve C# hakkında temel bilgilier
 
 /*
 Todo: Task listte çıkmasını sağlar mesela bir noktada bir kod yazılıcak onu direkt bulabilmemizi sağlar
@@ -104,6 +101,38 @@ Kullanmazsın ama kod okurken görürsen şaşırma aklında bulunsun çok çok 
 !!!!!!Bu default değer kısmı sadece class içerisinde vardır.Main içinde tanımlayıp bir değer vermezsen değişkenler default
 değer almaz işlem yapamazsın!!!!!!
 
+Var keyword:Tutulacak değerin türüne uygun bir değişken tanımlayabilmek için kullanılan keyword.Kendisine atanan türün değerine
+bürünür.Compiler tarafından değerin türüne göre otomatik büründürülen bir keyworddür.Lakin bir tür değildir.
+Derleme aşamasında compile edilince olması gereken türe dönüşür var a = 5 yazılır compile süresinde int a = 5 olarak saklanır
+
+Dynamic keyword: Var ile farklı olarak ise uygulamanın runtimeında dönüşür int a = 5 gibi depolanmaya
+
+var a = 5;   kodu yazarken daha çalıştırmadan üstüne gelip türüne bakarsanız int32 yazar
+dynamic _a = 5;     kodu yazarken daha çalıştırmadan üstüne gelip türüne bakarsanız dynamic yazar.
+
+Varda sen eğer gelip de 
+var a = 5
+Console.Writeline(a.GetType());
+a = "Ahmet"
+Console.Writeline(a.GetType());
+böyle bir kod yazarsan sana daha compile etmeden hata verir ama aynısını dynamic için yaparsan
+dynamic a = 5
+Console.Writeline(a.GetType());
+a = 3.14F
+Console.Writeline(a.GetType());
+Çıktı olarak
+System.String
+System.Float görürsün yani bildiğin tür değiştirmiş olur.
+
+Nerelerde kullanılır: Uzaktan gelen türü bilinmeyen datanın bunu karşılayıp işlem yapmak istiyorsan yapılabilir.
+!!!!Varda bu şekilde yapılmaz çünkü uzaktan gelen dataları işleyemezsin çünkü tanımlandığı an türün belirlenmesi lazım.
+
+
+*/
+#endregion
+
+#region Scope kavramı, global değişken, const, readonly, static, deep copy, shallow copy
+/*
 Scope(Kapsam):Scopelar {   } süslü parantezler içerisinde olan kısımlara denir.Aynı scope içerisinde aynı değişken adı
 ile başka bir değişken yazılamaz fakat farklı scopelar içerisinde yazılabilir.Bir scope içerisinde tanımlanan değişkene tanım
 -landıktan sonra o scope içerisinde  her yerden erişilebilir. Mesela şöyle bir yapımız olsun
@@ -154,17 +183,11 @@ Son durumda böyle olması lazım.
 Shallow Copy:Değişkenler arası değer atamalarında değeri klonlamak/çoğaltmak yerine var olanı birden fazla referansla işaret
 -lemeye dayalı kopyalama yöntemi. Yaptığı şey aslında a = 5 i kopyalama kısmında 5i değil a'nın karşısındaki value adresinin
 değerini tutmak.Yani a = a * 5; işlemi yapıldığında a 25 olacak fakat b de 25 olacak çünkü b a'nın değerini referans tutuyor.
+*/
+#endregion
 
-
-
-Object: Tüm türleri karşılayabilen bir türdür. Tüm türler ondan türemiştir aslında 
-string  =  "Ahmet" örneğinde sol kısımda ne tür yazıyorsa sağ kısımda ona göre bir değer yazmalıdır ya mesela int = "Ali" 
-yazılamaz ama object = Tüm değer türleri yani object = "Ali" de olur object = 3623.3232 de olur fark etmiyor hepsini kapsar.
-
-Boxing:Object türdeki bir değişkene herhangi bir türdeki değişkeni gönderme işlemine denir.
-int yas = 28
-object kutu = yas
-
+#region Object, Boxing ve Unboxing
+/*
 Boxing işlemi neticesinde ilgili değer objectin içerisinde kendi türüyle saklanır. Fakat kutu değişkeni artık 28 değerini biz
 -lere object türünde getirecektir.kutu değişkeni içinde (object)28 olarak tutulduğu için artık onunla türe özgü işlemler yapamam
 int değeri ile sayısal işlem yapılamaz gibi çünkü o artık bir nesneye dönüştü.
@@ -188,38 +211,11 @@ Unboxing Örnek:
 int gercekDeger = (int)kutu; // Kutudan int olarak geri çıkardık
 int sonuc = gercekDeger + 2; // Artık işlem yapabilirsiniz!
 Console.WriteLine(sonuc);    // Çıktı: 30
+*/
+#endregion
 
-
-
-Var keyword:Tutulacak değerin türüne uygun bir değişken tanımlayabilmek için kullanılan keyword.Kendisine atanan türün değerine
-bürünür.Compiler tarafından değerin türüne göre otomatik büründürülen bir keyworddür.Lakin bir tür değildir.
-Derleme aşamasında compile edilince olması gereken türe dönüşür var a = 5 yazılır compile süresinde int a = 5 olarak saklanır
-
-Dynamic keyword: Var ile farklı olarak ise uygulamanın runtimeında dönüşür int a = 5 gibi depolanmaya
-
-var a = 5;   kodu yazarken daha çalıştırmadan üstüne gelip türüne bakarsanız int32 yazar
-dynamic _a = 5;     kodu yazarken daha çalıştırmadan üstüne gelip türüne bakarsanız dynamic yazar.
-
-Varda sen eğer gelip de 
-var a = 5
-Console.Writeline(a.GetType());
-a = "Ahmet"
-Console.Writeline(a.GetType());
-böyle bir kod yazarsan sana daha compile etmeden hata verir ama aynısını dynamic için yaparsan
-dynamic a = 5
-Console.Writeline(a.GetType());
-a = 3.14F
-Console.Writeline(a.GetType());
-Çıktı olarak
-System.String
-System.Float görürsün yani bildiğin tür değiştirmiş olur.
-
-Nerelerde kullanılır: Uzaktan gelen türü bilinmeyen datanın bunu karşılayıp işlem yapmak istiyorsan yapılabilir.
-!!!!Varda bu şekilde yapılmaz çünkü uzaktan gelen dataları işleyemezsin çünkü tanımlandığı an türün belirlenmesi lazım.
-
-
-
-
+#region Tür Dönüşümleri
+/*
 Tür dönüşümleri:Değişken türlerini dönüştürebilmemizi sağlar. Uzaktan veri gelebilir ve gelen veriyi bizim istediğimiz şekilde
 kullanmak için dönüştürebiliriz.
 
@@ -300,10 +296,11 @@ Sayısal türlerin char değerine dönüştürülmesi(ASCII):
 Aynı şekilde sadece tam tersi
 int a = 97;
 Console.Writeline((char)a);    /Output a(97 karakterinin ASCII değeri)
+*/
+#endregion
 
-
-
-
+#region Operatörler
+/*
 Operatörler
 Aritmetik operatörlerde küçük ve büyük veri türleri çarpılırsa büyük veri türünce yazılır.Bilinöçsiz dönüşüm yapılır.
 int x = 5;
@@ -394,8 +391,11 @@ string b = a ?? "Varsayılan Değer"; // Eğer a null ise b değeri döner deği
 Null coalescing operatöründe her iki tarafın da aynı türde olması gerekir. Eğer farklı türler olursa hata verir.
 a ile Varsayılan Değer aynı olucak yani.
 
+*/
+#endregion
 
-
+#region Akış Kontrol Mekanizmaları-Switch Case ve Switch Expressions
+/*
 Switch Case:Sadece eşitlik durumuna göre bir şart varsa switch kullanılabilir.Eger bir case ile esitlik saglanirsa diger caselere bakmaksizin direkt olarak diger case blogu ile aradaki 
 kodlar saglanip switch case yapisindan cikar
 switch (deger)    //deger dedigi sey surece esitlenecek deger
@@ -413,10 +413,16 @@ switch (menu)      //Burada degerin veri turu neyse casein yanindaki secenekleri
 {                  //Switch değerindeki(menu) sabit sayı veya değişken olabilirken case bloklarındaki değerler değişken olamaz 1 yerine x falan diyemezsin "x" diye isim verebilirsin sadece
     case 1:
     Toplama
+    break;
     case 2:
     Cikarma
+    break;
     case 3:
     Bolme
+    break;
+    case 4:
+    Carpma
+    break;
 }
 
 Switch Case'de When Keyword'ü
@@ -433,6 +439,317 @@ switch (satisTutari)
 }
 
 Switch Case'de Goto Keyword'ü
+Eğer bizim switch case yapımız başka bir case ile o casein kodları aynıysa biz kodumuzu tekrara düşürmemek için goto keywordünü kullanabiliriz. Goto keywordü ile başka bir casein 
+kodlarını çağırabiliriz.Şöyle bir yapımız olsun:
+int menu = 2
+switch (menu)
+{
+    case 1:
+    Toplama
+    break;
+    case 2:
+    Çıkartma
+    break;
+    case 3:
+    Toplama
+    case 4;
+    Toplama
+    break;
+}
+Eğer ben böyle bir yapı oluşturucaksam veya direkt başka bir casein kodlarını çağırmak istiyorsam goto keywordünü kullanabilirim.
+int menu = 2
+switch (menu)
+{
+    case 1:
+    Toplama
+    break;
+    case 2:
+    Çıkartma
+    break;
+    case 3:
+    goto case 1;  //case 3 tetiklendiğinde case 1in kodları çalışır ve break ile switch case yapısından çıkar.Case 3 için break yazılmaz çünkü goto kullandık.
+    case 4;
+    goto case 1;  //Eğer 2 tane aynı yere yönlendirmek yapacaksak alttaki kod gibi bir yapı kullanabiliriz.
+}
+
+int menu = 2
+switch (menu)
+{
+    case 1:
+    Toplama
+    break;
+    case 2:
+    Çıkartma
+    break;
+    case 3:  
+    case 4;
+    goto case 1;  
+}
+
+
+Switch Expressions:Case ile break arasında tek satırlık bir işlem varsa switch expressions kullanabiliriz. Oluşan kod kalabalığını önleyerek daha okunabilir bir yapı oluşturur.Bir case bloğunu 
+tek satıra düşürür.
+string isim = "";
+int menu = 2
+switch (menu)     
+{
+    case 1:
+    isim = "Ali"
+    break;
+    case 2:
+    isim = "Veli"
+    break;
+    case 3:
+    isim = "Ahmet"
+    break;
+    case 4:
+    isim = "Mehmet"
+    break;
+}
+Switch expressions kullanmadan üssteki şekilde oluyor fakat eğer kullanırsak ise alttaki kod şeklinde oluyor.
+int menu = 2;
+string isim = menu switch
+{
+    1 => "Ali",
+    2 => "Veli",
+    3 => "Ahmet",
+    4 => "Mehmet"     //Sonuncu casede artık sonuna virgül koymaya gerek yok onun haricinde diğer case bloklarının sonuna virgül koymak zorundayız.
+}
+
+
+Switch Expressions'da When Keyword'ü
+Switch expressions yapısında da when keywordü kullanılabilir. Switch expressions yapısında case ile break arasında tek satırlık bir işlem varsa switch expressions kullanabiliriz.
+ Oluşan kod kalabalığını önleyerek daha okunabilir bir yapı oluşturur.Bir case bloğunu tek satıra düşürür.2 türlü kullanımı vardır aşağıdaki örnekte olduğu gibi kullanılabilir.
+int menu = 2;
+string isim = menu switch
+{
+    1 when (3 == 3) => "Ali",
+    var x when (x == 2) && (isim != "Cengiz") => "Veli",   //Buradaki x aslında bizim menu değişkenimizdir. Burada var kullanmak zorunda değiliz değişkenin veri türünü de yazabiliriz. int gibi
+    3 => "Ahmet",
+    4 => "Mehmet",
+    var x => "Hiçbiri" //Bu normal switch yapısındaki defaulte denk gelir. Buradaki x aslında bizim menu değişkenimizdir.
+}
+
+Switch Expressions'da Tupple Patterns ve Tupple Patternsde when keywordü
+Tupple patterns switch expressions yapısında birden fazla değeri tek seferde kontrol edebilmemizi sağlar.
+int menu = 2;
+int menu2 = 3;
+string mesaj = "";
+switch (menu,menu2)
+{
+    case (1,1):
+    mesaj = "Sayılar 1 ve 1";
+    break;
+    case (2,3):
+    mesaj = "Sayılar 2 ve 3";
+    break;
+}
+
+int menu = 2;
+int menu2 = 3;
+string mesaj = (menu,menu2) switch
+{
+    (1,1) when (false) => "Sayılar 1 ve 1",
+    var x when x.menu == 2 && x.menu2 == 3 => "Sayılar 2 ve 3"
+}
+
+
+
+Positional Patterns ve Positional Patternsde when keywordü:(OOP izledikten sonra geri dön.)
+Property Patterns ve Property Patternsde when keywordü:(OOP izledikten sonra geri dön.)
+*/
+#endregion
+
+#region Akış Kontrol Mekanizmaları-If Else ve If Else If
+/*
+İf yapısı:if (sart) {} şeklinde kullanılır.Eğer şart doğru ise süslü parantez içerisindeki kodlar çalışır.Fakat eğer şart yanlış ise süslü parantez
+dışına çıkarak devam eder if else veya else yapısı ile kullanılabilir.İç içe if yapıları da olabilir.sart yerine boolean bir ifade yazılması gerekir
+Karşılaştırma veya mantıksal operatörler kullanılır veya direkt true,false da yazabiliriz.Switche nazaran değişken kullanılabilir.Daha esnek yapı.
+bool medenihal = true;
+if (medenihal == true){       //veri türü bool olduğu için == true yazmaya gerek yoktur. Direkt if (medenihal) şeklinde de yazabilirsin.
+    Console.Writeline("Evlilere özel kampanya...");
+}
+bool medenihal = true;
+if (medenihal){        //Eğer istersek farklı karşılaştırmalar yapabiliriz.medenihal == false yazmak yerine de !medenihal yazabiliriz. 
+    Console.Writeline("Evlilere özel kampanya...");
+}
+
+Not: Hem if hem else bloğunda yazmak istediğim bir şey varsa iksiine de yazmak yerine if-else bloğunun bittiği satırı yazarak sorunu çözebilirim.
+Else if:Python'daki elif ile aynı mantıkta çalışır.İf else if else yapısı ile birden fazla şartı kontrol edebiliriz.Sınırsız yazılabilir.
+if doğrularınsa eğer else iflere bakılmaz direkt.Else iflerin en sonuna else yazılır.
+Scopesuz if yapısı:İf içerisinde tek bir satırlık işlem yapılacaksa scope olmadan da if yapısı kullanılabilir.Birden fazla işlem yapılacaksa scope kullanmak zorunludur.Yoksa if içine almaz.
+if (sart){
+    islem;
+}
+if (sart)
+    islem;
+Bunu tek satırda da yapabiliriz. 
+if (sart) islem;         şeklinde yazabiliriz. Fakat bu okunabilirliği düşürdüğü için tavsiye edilmez.
+*/
+#endregion
+
+#region Pattern Matching
+//Pattern Matching dediğimiz şey belirli senoryalara belirli desenleri eşleştirme demektir.Şu senaryo için şu pattern en iyisi diye bir kanıya varıp onun implamente edilmesi.
+/*Type Pattern: Object içerisinde kullandığımız is operatörünün bir tipin belirlenmesinde kullanılan desenleştirilmiş halidir.is ile belirtilen türün direkt dönüşümünü sağlar.
+object = 123
+if (x is string)
+{
+    string xx = x as string;
+    Console.WriteLine($"X is a string");
+}
+else 
+{
+    int xx = (int)x ;
+    Console.WriteLine($"X is a integer");
+}
+Bunun yerine bize şunu sağlar.
+object x =123
+if (x is string xx)
+    Console.WriteLine($"X is a string");    
+else if (x is int xxx)
+    Console.WriteLine($"X is a integer");
+Burada inte yazdığımız değişken adı olan xxx ile stringe yazdığımız değişken adı olan xxin aynı adda olmaması lazım!!1
+
+
+Constant Pattern:Bir değişkenin değerini doğrudan sabit bir değerle (int, string, bool, null vb.) karşılaştırmanızı sağlayan en basit desen eşleştirme (pattern matching) türüdür.
+object sayi = 5;
+if (sayi is 5) // Constant pattern: sayi tam olarak 5 mi?
+{
+    Console.WriteLine("Sayı beşe eşittir.");
+}
+// Null kontrolü için de sıklıkla kullanılır:
+if (sayi is null) 
+{
+    Console.WriteLine("Değer boştur.");
+}
+
+
+is operatörünü direkt olarak == operatörü gibi kullanabiliriz.
+Console.WriteLine(a is string);         
+Console.WriteLine(a is int);
+Console.WriteLine(a is bool);
+Console.WriteLine(a is char);
+Üstteki 4 adet kullanım tür kullanımı türünü sormak direkt is operatörüne özel bir özellik.
+Fakat aşağıdaki gibi değer kontrolu constant patterne özel bir özellik.Değer kontrolü yaparken aynı türdeki değeri sormazsan hata verir a = 5 ise a is "Asdfghh" yazarsan hata alırsın.
+Console.WriteLine(a is "42");
+Console.WriteLine(a is 42);             //Sadece bunda izin verir çalıştırmaya a = 5 olduığu için
+Console.WriteLine(a is "kırk iki");
+Console.WriteLine(a is true);
+Console.WriteLine(a is 'A');
+
+
+
+Var Pattern:C# içerisinde bir ifadeyi eşleştirirken aynı zamanda onun değerini yeni bir değişkene atamanızı sağlayan ve türü derleyicinin otomatik olarak belirlediği bir desendir.
+is var degiskenAdi şeklinde kullanılır.
+object = "Ali"
+if (x is var sonuc)
+    Console.WriteLine("Onun adı " , sonuc);
+//Kritik:Var normalde compile ederken türü belirler fakat var pattern runtimeda türü belirler.
+
+Recursive Pattern:Switch casede kullandığımız referans türlü değerleri de kontrol etme ve when kullanımı şu an kullanılıyor zaten o yüzden kullanıyoruz.
+
+Type Pattern ve Var pattern kritik fark:
+bool result = x is string o1       //Type patternda x değişkeninin veri türünün string olmamama ihtimaline karşı belirsizlik olduğu için yazdırma komutu çalışmaz o sadece if bloğuna mahkum
+Console.WriteLine(o1);
+
+bool result = x is var o1
+Console.WriteLine(o1);             //Fakat burada biz var ile o2 değişkenine atadığımız için xi türünün hatalı olma ihtimali kalkıyo o yüzden bu kod çalışıyor.
+
+
+
+Pattern Matching Enchanments:
+Simple Type Pattern:
+object obj = new Person();
+switch (obj)
+{
+    case Person p:
+        //...
+        break;
+}
+Bunun yerine bu şekilde değişken verme zorunluluğunu kaldırmıştır tür kontrolünde
+object obj = new Person();
+switch (obj)
+{
+    case Person p:
+        //...
+        break;
+}
+
+
+Relational Pattern:Desenlerde < > <= >= gibi büyüktür küçüktür karşılaştırmalarını hızlıca yapabilmemizi sağlar.Switch case artık karşılaştırma yapabilir hale geldi.
+int menu = 2;
+string mesaj = menu switch
+{
+    < 50  => "50den küçük",
+    > 50 => "50den büyük"
+}
+
+
+Logical Pattern:And or notı programlamaya katan pattern ve relational pattern ile çok uyumlu.direkt yazı olarak and or yazabiliriz && ya da || kullanmak zorunda değiliz.
+Not Pattern:not operatörünü kullanabilmemizi sağlar.Switchte not keywordünü kullanabiliriz. not Goggles gibi.
+*/
+#endregion
+
+
+#region Hata Kontrol Mekanizması
+/*
+Syntax Hataları:Bir keywordü yanlış yazmak ya da parantez silmek gibi veya satır sonuna ; koyulması gereken yerde koymamak gibi sözdizimi olarak yazarken yapılan yanlış için verilen hatadır.
+Runtime Hataları:Derlendikten sonra çalışma zamanında oluşan hatalardır.Direkt kullanıcının karşısına çıkan hatalardır.Son kullanıcının karşısına hata fırlatan bir yazılım kötü bir imaj 
+ve güvenlik riskleri gibi riskler taşıdığı için bizler onların karşısına hata ekranları çıkartmamak için yazılımın içinde hataları kontrol edip manipüle ederek yönetmeliyiz.
+Runtime hataları örnek:
+Olmayan dosyayı açmaya/okumaya/üzerine yazmaya çalışmak
+Olmayan değer üzerinde işlem yapmaya çalışmak
+Uygun olmayan formatlarda çalışmak
+Veritabanı bağlantılarının kopması
+
+Try-Catch Mekanizmaları:
+Çalışma zamanında olası hataları karşılamamızı,manipüle etmemizi sağlar.Olağandışı kısımları olağan bir kısım gibi göstermek ve hataya bilgi verilmesini sağlayan bir yapılanmadır.Amaçları:
+1-)Kullanıcıya hata olduğunu hissettirmemek.
+2-)Alınan hatanın nedenine dair kullanıcıyı bilgilendirmek.
+3-)İşletim sistemleri aykırı durum olduğunda uygulamayı sonlandırmak ister ve sonlandırırlar.try-catch blokları hatayı manipüle ederek uygulamanın kapanmasını engeller.
+
+try
+{
+    //Olası runtime hatalarını verebilicek kodları buraya yapıştır.
+}
+catch 
+{
+//try içerisinde olası hata söz konusuysa kodun akışı arada kesilecek ve akış catch bloğundan devam edecektir.
+}
+
+Şimdi bu yapı sorun çıkartabilicek bir yapı çünkü mesela biz ilk girdiğimiz zaman stringden inte dönüştürdüğümüz için metinsel bir karakter girersek eğer hata verecek.
+
+Console.Write("Lütfen 1.ürünün fiyatını giriniz: ");
+int urun1= int.Parse(Console.ReadLine());
+Console.Write("Lütfen 2.ürünün fiyatını giriniz: ");
+int urun2 = int.Parse(Console.ReadLine());
+
+Console.WriteLine($"Ödenecek toplam tutar: {urun1 + urun2}");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -466,3 +783,75 @@ Switch Case'de Goto Keyword'ü
 
 
 */
+#endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
