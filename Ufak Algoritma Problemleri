@@ -114,13 +114,45 @@ else
     Console.WriteLine("Girdiğiniz sayı " , sonuc);
 #endregion
 
+#region Problem 6
+//1den 10a kadar olan tüm sayıları ekrana yazdıralım
+for(int i = 1; i <= 10;i++)
+{
+    Console.WriteLine(i);
+}
+#endregion
 
+#region Problem 7
+//1den 40a kadar olan çift sayıları yazdır 1 ile 40 dahil
 
+for(int i = 1;i <= 40; i++)
+{
+    if(i % 2 == 0)
+        Console.WriteLine(i);
+}
+#endregion
 
+#region Problem 8
+//Klavyeden girilen sayının faktöriyelini bulan programı yapalım
+Console.Write("Lütfen sayıyı giriniz : ");
+int sayi = int.Parse(Console.ReadLine());
+int faktoriyel = 1;
+for (int i = sayi;i > 0;i--)
+{
+    faktoriyel *= i;
+}
+Console.WriteLine(sayi);
+#endregion
 
-
-
-
+#region Problem 9
+//O anki tarihin saniye değerinin 5in katıysa o tarihi ekranda gösteren uygulamayı yazalım
+int tarih = 0;
+while(true)
+{
+    if(DateTime.Now.Second % 5 == 0)
+        Console.WriteLine(DateTime.Now);
+}
+#endregion
 
 
 
