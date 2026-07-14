@@ -154,6 +154,59 @@ while(true)
 }
 #endregion
 
+#region Problem 10
+//Saniye 30 olduğunda döngüden çıkıcak bir kod 
+int tarih = 0;
+while(true)
+{
+    if(DateTime.Now.Second == 45)
+        break;
+    Console.WriteLine(DateTime.Now);
+}
+#endregion
+
+#region Problem 11
+//Kullanıcıdan 't' harfini girene kadar alınan sınırsız sayıda sayıyı toplayan ve sonucu ekrana yazdıran uygulamayı yapalım.
+int toplam = 0;
+while (true)
+{
+    Console.Write("Lütfen bir sayı giriniz : ");
+    string girdi = Console.ReadLine();
+    if (girdi = "t")
+    {
+        Console.WriteLine("Toplam sonuç = " + toplam);
+        break;
+    }
+    else
+        toplam += int.Parse(Console.ReadLine);
+}
+#endregion
+
+#region Problem 12
+//Kullanıcı 'c' tuşuna basana kadar sonsuz döngüde kalan uygulamayı yaz.
+while (true)
+{
+    if (Console.ReadKey().KeyChar == 'c')
+        return;
+}
+#endregion
+
+#region Problem 13
+//Adımızın İlkten 3 Soyadımızın Sondan 5 Karakterini Getirelim.
+string adsoyad = "Ali Rıza Göçer";
+//3 Çözüm Yöntemi var
+//Çözüm 1:
+Console.WriteLine(adsoyad[2]);
+Console.WriteLine(adsoyad[adsoyad.Length - 5]);
+
+//Çözüm 2:
+string aralik = adsoyad[2..^4];
+Console.WriteLine(aralik[0]);
+Console.WriteLine(aralik[aralik.Length - 1]);
+
+//Çözüm 3:(Benim Yöntem)
+Console.WriteLine(adsoyad[2]);
+Console.WriteLine(adsoyad[^5]);
 
 
 
@@ -161,6 +214,10 @@ while(true)
 
 
 
+
+
+
+#endregion
 
 
 
