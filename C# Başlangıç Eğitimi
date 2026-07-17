@@ -957,16 +957,6 @@ for(int i = 0; i < 10 ; i++)
 
 }
 
-Foreach bir döngü değil iterasyondur.Ben buraya kendi notumu ekliyorum ileriye de tekrardan hocanın notunu ekleyeceğim.
-Foreach Keywordü:bir dizi (array) veya koleksiyon (liste, sözlük vb.) içerisindeki elemanları tek tek ve sırasıyla gezmenizi (iterate etmenizi) sağlayan en pratik döngü türüdür. Sayacını 
-sizin yerinize yönettiği için koleksiyonun boyutunu veya indeks numaralarını manuel takip etme zorunluluğunu ortadan kaldırır. Kullanımı oldukça basittir; döngü her adımda koleksiyondaki
-sıradaki elemanı belirlediğiniz geçici bir değişkene atar ve blok içerisindeki kod bu değişken üzerinden çalışır.
-
-foreach (var eleman in koleksiyon)       //Eleman: Döngünün o anki adımda işlediği, koleksiyonun içerisindeki tek bir veridir (örneğin listedeki tek bir sayı veya metin).
-{                                        //Koleksiyon: İçinde birden fazla veri (öğe) barındıran yapı veya listedir; örneğin bir string[] dizi veya List<int> tam sayı listesi bu görevi görür.
-    Console.WriteLine(eleman);
-}
-*/
 #endregion
 
 #region Keywordler/Manevratik Komutlar
@@ -1333,8 +1323,7 @@ if (x != string. Empty && x is not null)
          Bunu kullanmak yerine biz IsNullOrEmpty fonksiyonunu kullanıyoruz
 }
 
-if (string.IsNullOrEmpty())       //Onun yerine direkt bunu kullanırız.Eğer Null ya da empty ise cevap true gelir.Genelde başına ! konularak konulur null ya da empty değilse kodu çalıştır diye
-{
+if (string.IsNullOrEmpty())       //Onun yerine direkt bunu kullanırız.Eğer Null ya da empty ise cevap true gelir.Genelde başına ! konularak konulur null ya da empty değilse kodu çalıştır
 
 }
 
@@ -1444,7 +1433,7 @@ string metin = @"hava çok
 İkisi de olur.
 
 
- String Interpolation İle Verbatim String Birlikteliği:beraber kullanılabilirler.
+String Interpolation İle Verbatim String Birlikteliği:beraber kullanılabilirler.
 string mailMessage = 
 @$"Merhaba {isim} {soyisim}
 {siparisNo} nolu siparis talebiniz tarafımızca alınmıştar.
@@ -1520,11 +1509,402 @@ Console.WriteLine("           ahmet cümbül               ".TrimEnd());
 
 TrimStart : Elimizdeki ifadenin başında boşluk varsa silmeye yarar.
 Console.WriteLine("           ahmet cümbül               ".TrimStart());
+*/
+#endregion
+
+#region Dizilerde Verisel Performans
+/*
+Diziler neden maliyetli:Çünkü diziler üzerinde işlem yaparken bir kopyalama işlemi yapılır.Genelde kullanılan işlemlerde Clear,IndexOf,Copy gibi metodların kullanımı bir diziyi sadece 
+üstünde işlem yapılan bir şey haline getirmez gidip yapılan işlemlerde tekrardan diziler oluşturarak bu işlemleri yapar.Diziler üzerinde yapılan çalışmalarda bu maliyeti ortadan 
+kaldırabilmek ve daha performanslı çalışabilmek için ArraySegment ve StringSegment türleri geliştirilmiştir.
+
+ArraySegment:Bir dizinin bütününden ziyade belirli bir kısmına yahut parçasına ihtiyaç dahilinde ilgili diziyi kopyalamak yerine(ki görece oldukça maliyetli bir operasyondur) bağımsız bir 
+referans ile erişmemizi ve böylece salt bir şekilde temsil etmemizi sağlayan bir yapıdır.
+int[] yaslar = {10,20,30,40,50,60,70,80,90,}; 
+
+ArraySegment<diziTürü> diziİsmi = new ArraySegment<diziTürü>;
+ArraySegment<int> segment1 = new ArraySegment<int>(yaslar);         //Tüm diziyi alıyor
+ArraySegment<int> segment2 = new ArraySegment<int>(yaslar,2 , 5);   //{30,40,50} bu üçünü alıyor.
+Bunların normal ranges and indicesden farkı bunların hepsi aynı datayı kullanıyor birinde bir şey değiştirirsen diğerinde de değiştirmiş olursun.
+
+ArraySegment Slicing(Dilimleme) Özelliği:Bir dizi üzerinde birden fazla parçada çalışacaksan eğer herbir parçayı ayrı bir ArraySegment olarak tanımlayabiliriz. Bu tanımlamaların dışında 
+diziyi tek bir arraysegment ile referans edip ilgili parçaları o segment üzerinden talep edebiliriz. Yani ilgili diziyi tek bir segment üzerinden daha rahat bir şekilde parçalayasbiliriz. 
+Bu durumda bize yazılımsal açıdan efektiflik kazandırmış olacaktır.
+ArraySegment<int> segment = new ArraySegment<int>(sayilar);
+ArraySegment<int> segment1 = segment.Slice(0, 3);
+ArraySegment<int> segment2 = segment.Slice(4, 7);
+ArraySegment<int> segment3 = segment.Slice(5, 10);
+
+
+
+StringSegment : StringSegment türünü kullanabilmek için uygulamaya Microsoft.Extensions.Primitives paketinin yüklenmnesi gerekmektedir.StringSegment devreye girerek yeni bir string 
+oluşturulmasını engeller. Orijinal string'i işaret eden bir başlangıç noktası (Offset) ve uzunluk (Length) tutar.
+StringSegment segment = new StringSegment(text);
+StringSegment segment1 = new StringSegment(text, 2, 5);
+Console.WriteLine(segment1);
+
+
+StringBuilder : StringBuilder, string birleştirme operasyonlarında + operatörüne nazaran yüksek maliyeti absorbe edebilmek için arkaplanda StringSegment algoritmasını kullanan ve bu 
+algoritma ile bizlere ilgili değerleri olabilecek en az maliyetle birleştirip döndüren bir sınıftır.
+string isim = "Gençay";
+string soyisim = "Yıldız";
+//Console.WriteLine(isim +" "+ soyisim);
+
+StringBuilder builder = new StringBuilder();
+builder.Append(isim);           //+ operatörü kullanmak yerine bunu kullanarak performans artışı sağladık.
+builder.Append(" ");
+builder.Append(soyisim);
+Console.WriteLine(builder.ToString());
+
+
+Span,ReadonlySpan,Memory atladım bunlara dönücem:ATLADIM.
+*/
+#endregion
+
+#region Regular Expressions
+/*
+Bir metinsel ifadelere pattern uygulamak için,metinsel ifadelerin içerisinde ihtiyaca istinaden düzenlenir.
+Bir metinsel ifade içerisinde @ karakteri geçen bütün aralıkları elde etmek istediğimizi varsayalım.
+baasdseda@asm|231232'dkasd@dlqwödq213'asdasdwd
+
+Dikkat ederseniz bu değerlerdeki karakterlerin uzunluğu ve ne olduğu önemli değil. Yeter ki @
+karakteri olsun.Artık bizim için düzen dediğimiz şey @ karakterini görmemiz o bizi ilgilendiriyor sadece.
+Bir mail adresinin mail formatında olup olmadığını anlayabilmemiz için bakmamız gereken şeyler var.
+
+alirizagocer@gmail.com         altand3uzya2131tan32b5ana.kadar.2.ddsa212.3@gmail.com          bu iki mail arasında hiçbir fark yoktur baktığın zaman çünkü ikisi de mail kurallarına uyuyor.
+
+Her email adresi mutlaka @ ve ardından .(nokta) karakteri barındırır. Eğer birden fazla nokta varsa, noktalardan biri mutlaka @ karakterinden sonra olmalıdır.
+Haliyle bir karakter dizisinin email adresi olup olmadığını test etmek oldukça zor olacaktır. Bu yüzden C#'ta bu tür düzenli ifadeleri temsil edebilmek için Regular Expressions operatörleri 
+geliştirilmiştir. Bu operatörler eşliğinde elde edilen verinin tasarlanan metinsel düzene uyup uymadığı değerlendirilebilmektedir. Regular ifadeler System. Text.RegularExpressions 
+namespace'i altındaki Regex sınıfı tarafından temsil edilmektedir.
+
+Regular Expressions Operatörleri:
+
+^ Operatörü:Satır başının istenilen ifadeyle başlamasını sağlar.
+^9 : 91231 91122 9asdasdas9 9das.dd113 9'+s2%33&5!6             Başında 9 olduğu sürece sonrasında ne geldiği önemsizdir.
+string text = "9tro55ardb3şiktaşageldiyesbe223321313131salah_da_gelsin122233312''''^'!!'!+4543345";
+Reger regex = new Regex("^9");
+Match match = regex.Match(text);
+Console.WriteLine(match.Success);
+
+
+\ Operatörü : Belirli karakter gruplarını içermesini istiyosak kullanırız.Tek başına kullanılmasının yanında yanına başka karakterler getirilerek de kullanılabilir.
+
+\ : Belirli karakter gruplarını icermesini istiyorsak kullanırız.
+\D : Metinsel degerin ilgili yerinde rakam olmayan tek bir karakterin bulunması gerektigi belirtilir.
+\d : Metinsel değerin ilgili yerinde 0 - 9 arasında tek bir sayı olacağı ifade edilir.
+\W : Metinsel değerin ilgili yerinde alfanümerik olmayan karakterin olması gerektiği belirtilir. Alfanümerik karakterler : a-z A-Z 0-9
+\w : Metinsel değerin ilgili yerinde alfanümerik olan karakterin olacağı ifade edilir.
+\S : Metinsel değerin ilgili yerinde boşluk karakterleri(tab/space) ışında herhangi bir karakterin olamayacağı belirtilir.
+\s : Metinsel değerin ilgili yerinde sadece boşluk karakterinin olacağı ifade edilir.
+
+Örn:9 ile başlayan, ikinci karakteri herhangi bir sayı olan ve son karakteri de boşluk olmayan bir düzenli ifade
+oluşturalım.
+^9\d\S
+string text = "9tro55ardb3şiktaşageldiyesbe223321313131salah_da_gelsin122233312''''^'!!'!+4543345";
+Reger regex = new Regex(@"^9\d\S");          //9tr     sadece bu üç karaktere bak ilk karakter 9 mu ikinci karakter harf mi ve üçüncü karakterde boşluk olmıcağı söyler ama gerisine bakmaz.
+Match match = regex.Match(text);
+Console.WriteLine(match.Success);
+
+
++ Operatörü : Belirtilen gruptaki karakterlerden bir ya da daha fazlasının olmasını istiyorsak kullanılan operatördür. 9 ile başlayan, arada herhangi bir sayısal değerleri olan ve son 
+karakteri de boşluk olmayan bir düzenli ifade oluşturalım.
+
+string text = "98758345d";              //Bu true döner.
+string text = "987a58345d";             //Bu da true döner çünkü ilki 9 oldu arada sayılar var ve son karakter de boşluk değil a harfi oldu.
+Regex regex = new Regex(@"^9\d+\S");  //Burda demek istediği şey ilki 9 olsun ikinci ve ikinciden sonrakiler sayı olsun ve en son karakter de boşluk olmasın.
+Match match = regex.Match(text);
+
+Console.WriteLine(match.Success);      //True döner
+
+
+Veya Operatörü : Baş harfi a ya da b ya da c olan metinsel ifadeyi girelim
+string text = "abcaaabbbcccc";
+Reger regex = new Regex(@"a | b | c ");
+Match match = regex.Match(text);
+Console.WriteLine(match.Success);
+
+
+{n} Operatörü : Sabit sayıda karakterin olması isteniyorsa {adet} şeklinde belirtilmeli.
+513-334-12-23
+\d\d\d-\d\d\d-\d\d-\d\d
+\d{3}-\d{3}-\d{2}-\d{2}
+
+string text = "513-334-12-23";              
+Reger regex = new Regex(@"\d{3}-\d{3}-\d{2}-\d{2}");
+Match match = regex.Match(text);
+Console.WriteLine(match.Success);
+
+
+? Operatörü : Bu karakterin önüne gelen karakter ya 1 defa kullanılacak ya da hiç kullanılmayacaktır.
+//Bu karakterin önüne gelen karakter en fazla bir en az sıfır defa olabilmektedir.
+//\d{3}B?A --- > 234BA, 543BA, 543A, 123BBA
+
+string text = "234BA";           true
+string text = "543BA";          //true
+string text = "543A";           //true
+string text = "123BBA";        //False döndürür çünkü B 2 defa var
+Reger regex = new Regex(@"\d{3}B?A");
+Match match = regex.Match(text);
+Console.WriteLine(match.Success);
+
+
+. Operatörü : Gelen yere \n hariç her şey gelebilir.
+string text = "213'A";
+Reger regex = new Regex(@"\d{3}.A");
+Match match = regex.Match(text);
+Console.WriteLine(match.Success);
+
+
+\B \b Operatörleri: 
+//\B: Bu ifade ile kelimenin başında ya da sonunda olmaması gereken karakterler bildirilir.Başında veya sonunda ne olmıcak ona bakar
+//\b: Bu ifade ilgili kelimenin belirtilen karakter dizisi ile sonlanmasını sağlar.sonunda ne olucak ona bakar
+
+string text = "123dir";
+Regex regex = new Regex(@"\d{3}dır\B");       //False
+Match match = regex.Match(text);
+Console.WriteLine(match.Success);
+
+
+[n] Operatörü : Karakter aralığı belirtir. Aynı zamanda özel karakterlerin yerinde yazılmasında ifade eder.
+\d{3}[A-E]         //A ile E arasındaki karakterlerin yazılabiliceğini anlatır.
+
+(507) 751 45 92
+[(]\d{3}[)]\s\d{3}\s\d{2}\s\d{2}            //Burada parantezleri köşeli parantez içine aldığımız içine alarak uygulayabiliriz.
+
+
+
+Regular Expressions Match Sınıfı Özellikleri:
+string text = "(507) 751 45 92";
+Regex regex = new Regex(@"[(]\d{3}[)]\s\d{3}\s\d{2}\s\d{2}");
+Match match = regex.Match(text);
+
+Console.WriteLine($"Success : {match.Success}");         //Verdiğimiz yapıya uyup uymadığını bool olarak döndürür.
+Console.WriteLine($"Value : {match.Value}");|            //Doğrulanan verinin ne olduğunu bize getirir.
+Console.WriteLine($"Index : {match. Index}");           //Doğrulamanın kaçıncı indexten başladığını gösterir.
+Console.WriteLine($"Length : {match. Length}");         //Doğrulanan verinin kaç karakterli olduğunu söyler.
+*/
+#endregion
+
+#region Koleksiyonlar
+/*
+Dizilerde bizim bahsettiğimiz sınırlılıkları kaldıran bir yapıdır.Performans olarak diziler bir tık daha iyidir ama koleksiyonların efektifliği o açığı kapatır.Kendi kapasitesini 2^n 
+şeklinde arttırır.
+Şu an ilk koleksiyon olan ArrayListten bahsedicez nesneye yönelik programlamaya girince koleksiyonlara devam edicez.
+ArrayList Tanımlama:using System.Collections yazman gerekiyor kullanabilmek için.
+
+int[] yaslar = new int[18];       //Dizi tanımlaması 
+
+ArrayList _yaslar = new ArrayList();    //Koleksiyon tanımlaması
+
+Koleksiyonlara nasıl veri atanır.
+yaslar[5] = 123;   //Dizide bu şekilde atanır.
+_yaslar.Add(123);
+
+Veri nasıl okunur:
+Console.WriteLine(yaslar[5]);
+Console.WriteLine(_yaslar[5]);
+
+
+ArrayList Boxing Unboxing Durumları:Arrayliste verdiğin değerler otomatik olarak boxinglenmiş olarak alınıcağı için(object türünde tutulur veriler) bizim otomatik olarak unboxing yapmamız
+gerekiyor eğer veriler üstünde türe özel bir işlem yapacaksak.dizilerde length yazarken koleksiyonlarda count kullanıcaz.
+
+
+ArrayList Collection Initiliazers ile Değer Ekleme
+ArrayList arrayList = new ArrayList() {
+    "Ahmet",
+    123,
+    *a',
+    true
+}
+*/
+#endregion
+
+#region İterasyon
+/*
+İterasyon Nedir?(Bunu anlatıyo ama biliyorum zaten foreache geçicem direkt): 
+
+Foreach bir döngü değil iterasyondur.
+Foreach Keywordü:bir dizi (array) veya koleksiyon (liste, sözlük vb.) içerisindeki elemanları tek tek ve sırasıyla gezmenizi (iterate etmenizi) sağlayan en pratik döngü türüdür. Sayacını 
+sizin yerinize yönettiği için koleksiyonun boyutunu veya indeks numaralarını manuel takip etme zorunluluğunu ortadan kaldırır. Kullanımı oldukça basittir; döngü her adımda koleksiyondaki
+sıradaki elemanı belirlediğiniz geçici bir değişkene atar ve blok içerisindeki kod bu değişken üzerinden çalışır.
+
+foreach (var eleman in koleksiyon)       //Eleman: Döngünün o anki adımda işlediği, koleksiyonun içerisindeki tek bir veridir (örneğin listedeki tek bir sayı veya metin).
+{                                        //Koleksiyon: İçinde birden fazla veri (öğe) barındıran yapı veya listedir; örneğin bir string[] dizi veya List<int> tam sayı listesi bu görevi görür.
+    Console.WriteLine(eleman);
+}
+  sen eğer iterasyon devam ederken gelip de bunun kullandığı dizinin içine eleman eklemeye çalışırsan iterasyon patlar.
+
+
+C#da hazır fonksiyonlar :
+Math Fonksiyonları:
+
+Math.Abs metodu bir sayinin mutlak degerini alir yani negatif bir degeri pozitif yapar.
+Kullanimi: double sonuc = Math.Abs(-5.5); seklinde yazilarak sayinin mutlak degeri elde edilir.
+
+Math.Ceiling metodu verilen ondalikli sayiyi kendisinden buyuk olan en yakin tam sayiya yukari yuvarlar.
+Kullanimi: double sonuc = Math.Ceiling(4.1); ifadesi sayiyi 5 yapar.
+
+Math.Floor metodu verilen ondalikli sayiyi kendisinden kucuk olan en yakin tam sayiya asagi yuvarlar.
+Kullanimi: double sonuc = Math.Floor(4.9); ifadesi sayiyi 4 yapar.
+
+Math.Round metodu bir sayiyi en yakin tam sayiya veya belirtilen ondalik basamak sayisina yuvarlar. 3.4 3e,3.5 4e ve 3.6 4e yuvarlanır bu şekilde normal matematikteki yuvarlama yapılır.
+Kullanimi: double sonuc = Math.Round(4.5); veya Math.Round(4.567, 2); seklinde kullanilir.
+
+Math.Pow metodu bir sayinin belirtilen ussunu alir yani kuvvetini hesaplar.
+Kullanimi: double sonuc = Math.Pow(2, 3); ifadesi ikinin uzeri uc yani 8 degerini verir.
+
+Math.Sqrt metodu bir sayinin karekokunu hesaplar.
+Kullanimi: double sonuc = Math.Sqrt(16); ifadesi 4 degerini verir.
+
+Math.Truncate metodu ondalikli bir sayinin virgulden sonraki kismini tamamen atar ve sadece tam kismini alir.
+Kullanimi: double sonuc = Math.Truncate(7.99); ifadesi 7 degerini verir.
+
+
+
+Datetime Metotları:
+DateTime.Now : Sistemdeki anlik tarih ve saat bilgisini veren ozellik.
+Kullanim : DateTime sonuc = DateTime.Now   //Output 17.07.2026 15:32:37
+
+DateTime.Today : Saat bilgisini sifirlayarak sadece bugunun tarihini veren ozellik.
+Kullanim : DateTime sonuc = DateTime.Today   //Output 17.07.2026 00:00:00
+
+DateTime.Compare : Iki tarihi karsilastirmayi saglayan metot.
+Kullanım : int sonuc = DateTime.Compare(tarih1, tarih2)   //Output -1, 0 veya 1
+
+DateTime.Add : Tarihsel zamana yil, ay, gun, saat gibi degerler ekleyerek yeni bir tarih hesaplamayi saglayan metot grubu.
+Kullanım : DateTime sonuc = tarih.AddDays(5)   //Output 22.07.2026
+AddDays
+AddHours
+AddMonths
+AddYears
+AddMiliseconds
+Bunların hepsini kullanabiliriz.
+
+
+
+TimeSpan : İki tarih arasındaki zaman farkını hesaplamamızı ve tutmamızı sağlayan tür.
+Kullanım : TimeSpan fark = tarih1 - tarih2   //Output 5.00:00:00
+
+
+
+Random.Next : Belirtilen aralıkta rastgele bir tam sayı üretmemizi sağlayan metot.
+Kullanım : int sonuc = random.Next(1, 100)   //Output 42
+
+
+Random.NextDouble : 0.0 ile 1.0 arasında rastgele ondalıklı bir sayı üretmemizi sağlayan metot.
+Kullanım : double sonuc = random.NextDouble()   //Output 0.548712
+*/
+#endregion
+
+#region Metodlar
+/*
+Metodun imzası : void fonksiyonAdi(int a,int b)
+{
+Metodun gövdesi
+}
+
+Erisim belirleyicileri ileride gorecegimiz Access Modifier yapilardir. Olusturulmus olan bir yapinin disaridan erisilip erisilmeyicini belirlememizi saglayan komutlardir.
+
+public : Erisilsin
+private : Gizli/Erisilmesink ..
+
+[erisim belirleyicisi] [geri donus degeri][metodun adi]( )
+
+Metotlar yaptiklari operasyonlar/algoritmalar/islemler
+neticesinde geriye degerler donebilmektedirler.
+Bu deger kodun icerisinde yakalanabilir ve programatik/1GAkademi
+olarak islemlere tabiii tutulabilir ..
+Geri donus degerini ekran ciktisiyla karistirmamak
+gerekmektedir ..
+
+Metotlarda diger yapilarda oldugu gibi bir isim almaktadirlar
+Temel isimlendieme kurallari geceerli alacaktir
+Rakamla baslayaz
+Ozel karakter olamaz
+
+Metot dedigimiz bu yapilanmalar dis dunyadan parametreler alabilmekte ve bu parametrelerdeki
+degerler uzerinde islemler gerceklestirebilmektedir .... Iste bu parametreleri parantez icerisinden
+alabilmekteyiz .... Bir metot illaki parametre almak zorunda degildir. (int sayi1) (int sayi1, int sayi2) ( )
+
+Metodun gerceklestirecegi operasyonu/fiiliyati/eylemi/algoritmayi olusturdugumuz
+kodladigimiz faaliyet alanidir ....
+
+
+4 tane metot tanımlama yöntemi
+Geriye dönüş değer döndürmeyen parametre almayan metot  //public yazmazsan otomatik private olarak oluşturulur.
+void fonskiyon()
+{
+
+}
+
+Geriye dönüş değer döndürmeyen parametre alan metot
+void fonksiyon(int a)
+{
+
+}
+
+Eğer bir fonksiyon geriye değer döndürüceğini söylüyorsa o değeri kesin döndürmelidir.int ile fonksiyon oluşturup içine değer döndürmeyen bir işlem yazarsan hata verir.
+Geriye Değer Döndüren Parametre Almayan Metot Türü}
+int fonksiyon()
+{
+return 5 * 25;
+}
+
+
+ Geriye Değer Döndüren Parametre Alan Metot Türü
+int fonksiyon(int a)
+{
+return a + 5;
+}
+
+Metodun geriye değer döndürmesi ekrana yazdırma değil algoritmanın akışında kullanılabilir olması demek.
+
+Normalde bir fonksiyonda 2 parametre varsa sen o fonksiyonu çağırırken 2 adet parametre göndermen lazım türlerine göre fakat burada int b = 20 yazdığım gibi default bir değer atarsan
+fonksiyona o zaman artık çağırırken fonksiyona yazıldığı kadar parametre vermek zorunda kalmazsın.Atamamış olsaydın fonksiyoncularDernegi(10,30) yazıcaktın ama artık atama yaptığımız için
+opsiyonel hale geldi ve şöyle çağırabilirsin fonksiyoncularDernegi(10) bu sefer ikinci parametreyi default atadığımız 20 değeri olarak vericek.Birden fazla parametre durumunda opsiyonel
+olanların her zaman sağ tarafta tanımlanması lazım.Birden fazla opsiyonel parametre de tanımlanabilir. int a, int b = 20 ,int c = 0 yazabiliriz.
+static void fonksiyoncularDernegi(int a, int b = 20)
+{
+
+
+}
+
+
+static olarak oluşturulan bir fonksiyonun içinde(Main fonksiyonu) fonksiyon çağırıcaksan onun da static ile oluşturulmuş olması lazım.
+
+Başka Sınıfta Tanımlanmış Metotların Erişimi: Eğer sen gidip de başka bir classta math clasının fonksiyonlarını veya kütüphane ile ilgili şeyleri kullanmak istiyorsan önce mainde
+nesne oluşturucaksın 
+ClassAdı nesneninAdi = new ClassAdı();
 
 
 
 
+Metotlarda Non Trailing Named Arguments:Tüm parametleri bu şekilde bu özellikle kullanman iyi olur öbür türlü karışabilir bir tanesini yaptıktan sonra.
+X(3, 5, "abc");       //Normal
+X(c: "abc", a: 5, b: 15);       //non trailing
 
+static void X(int a, int b, string c)
+{
+
+}
+
+Hangi parametreye hangi değerlerin gönderildiğini direkt görebilmek için bu özelliği kullanıırız.Göreceli bir şekilde çok parametreli fonksiyonlarda hedef parametrelere değer göndermemizi 
+sağlayan bir özelliktir.
+
+Metodlarda In parametreleri(In Keywordü): Bir fonksiyonda verdiğimiz parametre mesela burda örnekte a değişmemesi gerekiyorsa(pi sayısı olabilir,ID olabilir değişmemesi gereken kritik
+bir değerse) biz bu değerin değişmemesi için In keywordünü kullanabiliriz.Parametreyi readonly durumuna getirir.
+
+static void Main(string[] args)    //Main fonksiyonu
+{
+
+}
+
+
+static void X(in int a, int b)     //a değişmez b değişebiliriz.
+{
+
+}
 
 
 
@@ -1545,13 +1925,7 @@ Console.WriteLine("           ahmet cümbül               ".TrimStart());
 
 
 */
-#endregion
-
-
-
-
-
-
+#endregion 
 
 
 
