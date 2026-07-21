@@ -254,7 +254,31 @@ Console.WriteLine(count + 1);
 
 #endregion
 
+#region Problem 16
+//Belirli değer aralığındaki 5in katı olan sayıları recursive fonksiyon ile yazalım.
+//Bu problemi döngülerle de çok rahat çözeriz ama amacımız recursive fonksiyonlara alışmak.
+int Topla(int baslangic,int bitis)
+{
+    if( baslangic % 5 == 0)
+        return baslangic + Topla(++baslangic, bitis);
+    if(baslangic < bitis)
+        return Topla(++baslangic,bitis);
+    return 0;
+}
+
+#endregion
+
+#region Problem 17
+#endregion
 
 
 
 
+
+class Ali
+{
+    private Ali()
+    {
+        Console.WriteLine("Ya Allah,bismillah,Mohammed Salah");
+    }
+}
