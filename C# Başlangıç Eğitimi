@@ -1906,26 +1906,106 @@ static void X(in int a, int b)     //a değişmez b değişebiliriz.
 
 }
 
+20 Temmuz
+
+
+Local Functions: Bir metot sadece class içinde tanımlanmaz ister isek eğer metotların içinde de tanımlayabiliriz.struct,abstract class,interface,record yapılan-
+malarının içinde metot tanımlanmaktadır. C# 7.0 ile gelen özellik ile artık metotoların içinde de metot tanımlayabiliyor hale geliriz.
+Metotlar zaten çağırıldıkları sürece erişilebilir oldukları için local functionlarda erişim belirleyicisi yoktur direkt.Geri dönüş değerinden başlanır
+tanımlamaya.
+Tanımlama kuralları:
+Erişim Belirleyicileri yazılmaz.
+Dıştaki metot ile içtekinin adları farklı olmalıdır.Aynı ad yazılmaz.
+Kulanım kuralları :
+Bir local func. sadece ve sadece kendi tanımlandığı metot içerisinde kullanılabilir.
+Local func. tanımlandığı metotun içerisinde her yerden erişliebilir. 
+
+public static int X()
+{
+    void Y()
+    {
+
+    }
+Y();
+}
+
+Static Local Functions: Daha sonra BAKACAĞIM.Anlamadım tam. Local functionslardan daha performanslıdır.
+
+Metotlarda Overloading:
+Bir class içerisinde belirli kurallar dışında aynı isimde birden fazla metot aynı isimle tanımlanamaz.Metotların belli imzaları var bu imzalar sadece adları
+değildir bunlar kaç tane parametre aldığı ve parametre türleri ile isimlerinin birleşimidri.Erişim belirleyicileri veya geri dönüş tipleri etki etmez imzaya.
+Metotlarda Overloading için Şartlar:
+Metotların isimleri aynı olmalıdır.İmzalarının farklı olmaları gerekir.
+Topla(2, 5 , 3, 7)     //Fonksiyon 3 tetiklenir.
+Topla(2, (byte)5 , 3, 7) //Fonksiyon 4 tetiklenir
+
+int Topla(int a, int b){
+    return a + b;
+}
+int Topla(int a, int b, int c){
+    return a + b + c;
+}
+int Topla(int a, int b, int c, int d){
+    return a + b + c + d;
+}
+int Topla(int a, byte b, int c, int d){
+    return a + b + c + d;
+}
+
+Bunların sebebi yazılan bir sayının otomatik olarak int olarak atar.
 
 
 
 
 
+Recursive Fonksiyonlar : Kendi içerisinde kendini tetikleyen fonksiyonlar.Recursive fonksiyonlar bir kullanım yaklaşımıdır.Bir metotun kendini 1 defa çağırmış olması bile 
+recursive olmasına yeter.
+void X() 
+{
+    X()      //Artık recursive
+}
+
+void X() //Burada her seferinde kendini bitirmeden çağırdığı için ve sonsuz döngü olarak çalıştığından dolayı dünya asla yazılmaz hep merhaba yazar sadece
+{
+    Console.WriteLine("Merhaba ")
+    X()        
+    Console.WriteLine("Dünya")
+}
+
+void X(int a = 0)
+{
+    if ( a < 3)
+    {
+    Console.WriteLine("Merhaba")    //Çıktıda Merhaba Merhaba Merhaba Merhaba Dünya Dünya Dünya Dünya yazar çünkü sen bir fonksiyonu çağırdığın zaman o fonksiyon yarıda kalıp 
+    X()                             //tekrar çalışarak önceki threadi yarım bırakıp bu if şartını sağlayana dek Merhaba yazdırıp o threadleri yarım bıraktı ve şart artık sağlan 
+    }                               //mayınca if bloklarından teker teker çıkarak kalan bloklarda yazan kodları işledi.
+    Console.WriteLine("Dünya")
+}
+
+Döngülerin kullanıldığı her noktada recursive fonksiyon kullanılabilir fakat recursive fonksiyonların kullanıldığı her noktada döngüler kullanılamaz.
 
 
 
 
+Ref Keywordü : Referanstan gelir.Ramde 2 adet bölge vardır biri stack biri heap.Stack ramde direkt değerlerin değişkenlerle beraber tutulduğu yerdir.Heap ise değişkenlerin
+sadece değerlerinin tutulabildiği yerdir objeler burada tutulur.Biz daha önce şöyle bir kod incelemiştik
+int a = 5;
+int b = a;
+Bu iki değer stackte şöyle tutulur.Eğer sen a değerini 10 yaparsan b değeri değişmez çünkü artık türedi.Deep Copy yapmış olduk.
+(int) a = 5
+(int) b = 5
+Fakat biz gelip b değeri ile a değerini heapte 5 gösteren yere atasaydık biz referans türlü bir atama yapmış olurduk ve a değişince yani 5 değeri değişince bnin de değeri 
+değişmiş olurdu.Biz buna ise Shallow Copy demiştik. Ref keywordü değer türlü değişkenlerde(int,byte...) referans türlü atama(Shallow Copy) yapmamızı sağlar.
+Eğer sen gelip de anın değerinin referansını atamak istiyosan şu şekilde kullanılır artık.
+int a = 5;
+ref int b = ref a;
+Artık 5 değişirse hem anın değeri hem de bnin değeri o yeni değişen değer olur.
 
 
+Ref Returns:Sadece metotlarda kullanılır.Değer türlü değişkenleri referans türlü gibi kullanabilmemizi sağlar. Default olarak deep copy yapan değişkenleri ref keywordü ile
+shallow copy yapacak şekilde ayarlayabiliriz.
 
 
-
-
-
-
-
+Out keyword: 
 */
 #endregion 
-
-
-
