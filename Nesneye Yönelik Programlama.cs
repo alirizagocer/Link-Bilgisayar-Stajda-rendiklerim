@@ -33,7 +33,29 @@ class MyClass
     string a;
 }
 
+
 Fieldlarda default değer atanır.int için 0 gibi.Türüne özgü default değer atanır.
+
+
+
+
+Erişim Belirleyicileri(Kendim ekledim seride yoktu) :
+
+public : Her yerden erişilebilir — aynı sınıf, aynı proje, başka proje, hiç sınırlama yok.
+
+private : Sadece tanımlandığı sınıfın içinden erişilebilir. Alt sınıflar (kalıtım alan sınıflar) bile erişemez. Belirtilmezse üyelerin varsayılanı budur.
+
+protected : Tanımlandığı sınıf ve ondan türeyen (kalıtım alan) sınıflar içinden erişilebilir. Başka yerden erişilemez. Senin örneğindeki _boy, _en bu yüzden protected — Ucgen ve Dikdortgen 
+bunlara erişebilsin diye.
+
+internal : Aynı proje (assembly) içinden her yerden erişilebilir, ama başka bir projeden erişilemez.
+
+protected internal : protected VEYA internal — yani aynı projeden herkes ya da farklı projedeki alt sınıflar erişebilir (ikisinin birleşimi, "veya" mantığı).
+
+private protected : Aynı proje içindeki alt sınıflar erişebilir — yani hem aynı projede olmalı hem de alt sınıf olmalı (ikisinin kesişimi, "ve" mantığı). C# 7.2 ile geldi.
+
+
+
 
 Property : Nesne içerisine özellik sağlar.Property özünde bir metottur.Yani algoritmik kodlarımızı inşa ettiğimiz bir alandır.Metottan farklı olarak parametre almamaktadır ve ayrıca içerisinde
 get ve set olarak iki blok vardır.Bizim fieldlarımıza erişilmesini istemediğimiz için başka yazılımcılar tarafından biz de araya girerek propertyler tarafından erişim sağlatırız.
@@ -477,6 +499,7 @@ Static const ilgili sınıf içerisinde herhangi bir static yapılanmanın da te
 Nerede Kullanılır : Singleton desing patternda kullanılır.
 
 
+Positional Record : 
 
 
 
@@ -487,6 +510,340 @@ Nerede Kullanılır : Singleton desing patternda kullanılır.
 
 
 
+Kalıtım : OOP'nin en önemli özelliğidir. Üretilen nesneler farklı nesnelere özelliklerini aktarabilmekte ve böylece hiyerarşik bir düzenleme yapılabilmektedir.Aynı aile grubundan gelen 
+nesnelerin ya da yatayda eşit seviyede olan tüm olguların benzer özelliklerini tekrar tekrar herbirinde tanımlamaktansa bir üst sınıfta tanımlanmasını ve her bir sınıfın bu özellikleri
+üst sınıftan kalıtımsal olarak almasını sağlamaktadır. Böylece hem kod maliyeti düşmekte, hem de mimarisel tasarım açısından avantaj sağlanmaktadır.
+Nasıl durumlarda ya biz burda da kalıtım kullanalım diyoruz : Mesela sen geldin diyorsun ki ya kardeşim ben aynı kodu 2 defa yazıyorum ama aynı şey yani insan hayvan gibi ikisinde de aynı
+özellikleri olan şeyler var ve sen de geldiğinde dedin ki ya biz aynı kodu yazıyoruz e niye burda ben bu ikisinin de ortak yönlerini bir üst sınıfa yazıp sonra bunların farklı özelliklerini
+de kendi sınıflarına yazmıyorum.İşte bunu aklından geçirdiğin an ya da bunun ihtiyacını hissettiğin an kısacası KOD TEKRARIna düşüyorsan kalıtım yapabilirsin. 
+                                                    Canlı
+                                        İnsan                   Hayvan
+                                    Erkek    Kadın      Kedi      İnek     Tavuk
+                                                            Angus   Sığır
+Tam olmadı ama bu şekil bir tablo ortaya çıkıyor sen gelip de ben bunların hepsinin ortak özelliklerini bunların parentında toplayayım ayrılan özelliklerini ise kendi sınıflarında yazıyım
+dediğinde kalıtım mantığını kullanmış oluyorsun.
+
+
+C# programlama dilinde kalıtım sınıflara özel bir niteliktir. Yani bir sınıf sade ve sadece bir sınıftan kalıtım alabilir.Record'lar da kalıtım alabilmekte. Lakin sadece kendi aralarında.
+Kalıtım alabildikleri tek istisnai sınıf ise ileride göreceğimiz Object sınıfıdır.
+
+class Personel
+{
+    public string Adi {get ; set ;}
+    public string Soyadi {get ; set ; }
+    public int Maas {get ; set ; } 
+}
+
+class Avukat : Personel
+{
+    public int BaroPuan {get; set;}
+}
+
+class Yazilimci : Personel
+{
+    public string[] KodladigiDiller {get ; set ;}
+}
+
+class Pentester : Personel
+{
+    public int THMRank {get; set;}
+}
+
+Bu şekilde kalıtım örneği verebiliriz.
+
+Kalıtım aldığımız classa Base/Parent class denir. Kalıtım alana Derived/Child class denir.Bir sınıfın sadece 1 tane parent classı olabilir.
+class A : Y, X ,Z tanımlanamaz eğer bunlar interface falan değilse yukarıdaki gibi classlarsa olmaz.
+
+
+Bir nesne üretimi işlemi olurken önce o üretilicek nesnenin en üst atasına gidip ordan nesne üretmeye başlar yani A classının nesnesi üretilicek Anın parenti B, Bnin parenti C ve C parentı 
+olmayan bir class o zaman önce Cnin nesnesi sonra Bnin nesnesi en son Anın nesnesi üretilir. Madem ki, herhangi bir sınıftan nesne üretimi gerçekleştirilirken öncelikle base class'ından 
+nesne üretiliyor, bu demektir ki önce base class'ın constructor'ı tetikleniyor. Haliyle bizler nesne üretimi esnasında base class'ta üretilecek olan nesnenin istediğimiz constructor'larını 
+tetikleyebilmeli yahut varsa parametre bu değerleri verebilmeliyiz. İşte bunun için base Keyword'ü nü kullanmaktayız.
+//Main
+new MyClass2();
+
+class MyClass
+{
+    public MyClass(int a)
+    {
+    
+    }
+}
+
+class MyClass2 : MyClass
+{
+    public MyClass2() : base(5)   //Burada constructor hata vermesin diye parametre gönderdik base keywordü ile.
+}
+Eger ki base class'ta bos parametreli bir constructor varsa derived classta base ile bir bildirilmde bulunmak zorunda degiliz.Cunku varsayilan olarak kalitimsal durumda bos paarametreleri 
+constructor tetiklenir.
+
+Bir classin constructorinin yaninda : base( ... ) keywordunu kullanirsak eger o class'in base classinin tum constructorlarini bize getirecektir. Haliyle ilgili siniftan bir nesne uretililrken
+base classtan nesne uretimi esnasinda hangi constructorin tetiklenegini bu sekilde belirleyebiliriz.
+
+Base ile This Keywordleri Karşılaştırması : 
+This, bir sınıftaki constructor'lar arasında geçiş yapmamızı sağlar.
+Base, bir sınıfın base class'ının constructor'larından hangisinin tetikleneceğini belirlememizi ve varsa parametrelerinin değerlerinin derived class'tan verilmesini sağlar.
+//Main
+MyClass m = new();
+m.     Sen . operatörü ile class içindeki üyelere erişebiliyorsun fakat burada class içinde herhangi bir şey tanımlamasak da var olan 4 tane üye var
+
+class MyClass
+{
+    //Burada hiçbir şey tanımlamıyoruz veya tanımlayadabiliriz fark etmez
+}
+
+ToString,Equals,GetHashCode ve GetType bu 4 metot ne yaparsan yap her şekilde . operatörünü kullanınca gelirler. Nereden geliyorlar 
+C# programlama dilinde tüm sınıflar(delegate hariç ) Object sınıfından türetilir. Sen gelip de : Object yazsan da yazmasan da otomatik olarak Object sınıfından kalıtım almış oluyor.
+C# programlama dilindeki en üst sınıf Object sınıfıdır ve bu metotlar da Object sınıfından kalıtımsal olarak gelir.
+
+class Ali          //Direkt object sınıfıdan türemiştir.
+{
+
+}
+
+
+
+class Insan              // Eğer bir parentı yoksa bu da object sınıfından türemiştir. O yüzden bunun child sınıfları da object sınıfının özelliklerini bu sınıftan dolayı elde edecektir.
+{
+
+}
+class Ali : Insan        //Tek bir parentı olabiliceği için Ali sınıfının object sınıfı parentı değildir.
+{
+
+}
+
+
+İsim Saklama(Name Hiding) Sorunsalı : 
+class A
+{
+    public int X { get; set; }
+}
+class B : A
+{
+    public int X { get; set; }
+}
+Şimdi bu X A'dan mı
+geliyor, yoksa B'den mi
+Name Hiding denme sebebi B classından A'daki Xe erişmemiz mümkün değildir
+Günümüzde bunun için ekstra bir bildiri yapmamıza gerek yoktur.Fakat eskiden şöyle yapıyorduk(Makalede görürsen karıştırma diye)
+class A
+{
+    public int X { get; set; }
+}
+class B : A
+{
+    public new int X { get; set; }
+}
+
+
+
+Recordlarda Kalıtım : 
+Record'lar sade ve sadece Record'lar dan kalıtım alabilmektedirler. Class'lar dan kalıtım alamazlar yahut veremezler! Kalıtımın tüm temel kuralları record'lar için geçerlidir; Bir record 
+aynı anda birden fazla record'dan kalıtım alamaz! Record'lar da temelde class oldukları için üretilir üretilmez otomatik olarak Object'ten türerler.Base ve this keywordleri aynı amaçla 
+kullanılabilmektedir. Name Hiding söz konusu olabilmektedir. Ve aklıma gelmeyen diğer tüm durumlar da record'lar için geçerlidir.
+
+Sanal Yapılar (Virtual - Override):  Sanal yapılar, bir sınıf içerisinde bildirilmiş olan ve o sınıftan türeyen alt sınıflarda da tekrar bildirilebilen yapılardır.Bu yapılar metotlar veya
+propertyler olabilir.
+Name Hiding ile bir sınıftaki herhangi bir member'ı ondan türeyen torunlarda oluşturabiliyoruz ve buradaki yaşanan çakışmaya da Name Hiding diyoruz.
+Lakin, sanal yapılarda olay bu şekilde değildir. Bir sınıfta bildirilen sanal yapı(metot ya da property) bu sınıftan türeyen torunlarında ezilebilmekte yani devre dışı bırakılıp 
+yeniden oluşturulabilmektedir.
+Sanal yapılarda çağrılan member'ın hangi türe ait olduğu Run Time'da belirlenir.
+ 
+Ne için Kullanılır : Eğer ben miras aldığım bir özelliği ezip değiştirmek istiyorsam ve o özellik de sanalsa ben bu özelliği ezebilirim. Fakat ezmek gibi bir zorunluluğum yok!!!!
+Nasıl Sanal Yapı Oluşturulur : 
+class MyClass
+{
+    public virtual void MyMethod()
+    {
+
+    }
+}
+
+Sanal Yapılar Nasıl Ezilir : 
+Bir class'ta virtual ile işaretlenerek sanal hale getirilmiş bir member(metot ya da property), bu class'tan miras alan torunlarında ezilmek/yeniden yazılmak isteniyorsa eğer ilgili
+class'ta imzası override keywordü işaretlenmiş bir vaziyette tekrardan aynı member oluşturulur.
+class MyClass
+{
+    public virtual void MyMethod()
+    {
+
+    }
+}
+
+class MyClass2 : MyClass 
+{
+    public override void MyMethod()
+    {
+
+    }
+}
+
+
+Örnek : 
+//Main
+Terlik t = new();
+t.Bilgi();
+
+Kalem k = new();
+k.Bilgi();
+
+class Obje 
+{
+    public virtual void Bilgi()
+        {
+            Console.WriteLine("Ben objeyim kanka")
+        }
+}
+
+class Terlik
+{
+    public override void Bilgi()
+        {
+            Console.WriteLine("Ben terliğim kanka")
+        }
+}
+
+class Kalem
+{
+    public override void Bilgi()
+        {
+            Console.WriteLine("Ben kalmemim kanka")
+        }
+}
+//Output :  
+Ben bir kalemim
+Ben bir terliğim
+
+İkiden Çok Hiyerarşik Kalıtım Durumlarında Override Durumu :Bir class ta virtual ile işaretlenmiş herhangi bir member illa ki direkt o class'tan türeyen 1. dereceden class'lar da override
+edilmek mecburiyetinde değildir! İhtiyaca binaen alt seviyede ki torunlardan herhangi birinde override edilebilir.
+Kritik : Mesela şöyle bir yapı düşünelim. A en üst ata class E de en alt child class torun olan şu şekilde bir yapı var
+A - > B - > C - > D - > E            Burada A'da bir virtual member var ve sen bunu C classında ezdin. D ve E classlarına senin ezilmiş halin gider A classındaki hali değil. 
+Eğer sen istersen tekrardan override ederek istediğin bir şekilde kullanabilirsin fakat override etmezsen Cde edilen override halini kullanırsın D ve E classlarında.
+Dedenin dedesi mavi gözlüydü baban bunu siyah göz ile override etti artık sen yeni bir göz rengi ile override etmezsen sen de siyah gözlüsün. Sen override etmdin senin de torunun override etti
+çocuğun da siyah gözlü oldu torunun ise artık hangi göz rengi ile override ettiyse ona sahip olur.
+
+Örnek : 
+//Main
+
+
+
+
+class Sekil
+{
+    protected int _boy;
+    protected int _en;
+    public Sekil(int boy; int en)
+        {
+            _boy = boy;
+            _en = en;
+        }
+    public virtual int AlanHesapla()
+    {
+        return 0;
+    }
+}
+
+class Ucgen : Sekil
+{
+    public Ucgen(int boy, int en) : base(boy,en)
+    {
+    
+    }
+    public override AlanHesapla(int boy, int en)
+    {
+        return _en * _boy / 2;
+    }
+}
+
+class Dikdortgen : Sekil
+{
+    public Ucgen(int boy, int en) : base(boy,en)
+    {
+    
+    }
+
+    public override AlanHesapla(int boy, int en)
+    {
+        return en * boy / 2;
+    }
+}
+
+
+
+
+
+
+Polimorfizm(Çok biçimlilik) :  Bir nesnenin birden fazla farklı türdeki referans tarafından işaretlenebilmesi polimorfizm'dir.Polimorfizm bir nesnenin kalıtsal olarak  ilişkisi olan diğer 
+nesnelerin referanslarıyla işaretlenebilmesini sağlar.
+A türünden bir nesneyi A türünden bir referansla işaretlemenin yanında B türünden bir referansla, C türünden bir referansla da işaretleyebilmeye polimorfizm denir .
+Bir nesnenin, birden fazla referansla işaretlenmesi; o nesnenin, birden fazla türün davranışlarını gösterebilmesini sağlar.
+Ortak atadan gelen, kalıtımsal olarak 'Kuş'tan türeyen tüm hayvanlar kendi türleri yahut 'Kuş' türü ile referans edilebilirler.
+//Main
+MyClass2 m = new MyClass();      //Referans olanın diğerinin atası olması lazım yani referans olması için onun aile ağacı gibi düşünürsen daha büyük,daha erdemli biri olması için daha büyük
+                                //bir statüde olması gibi düşünebiliriz.
+class MyClass : MyClass2 
+{
+
+}
+
+class MyClass2
+{
+
+}
+
+//Main
+A a = new C();
+B b = new C();
+C c = new C();
+a.   //a. yaptığın zaman sadece X metotlarına erişebilirsin.
+b.   //b. yaptığın zaman sadece X ve Y metotlarına erişebilirsin.
+c.   //c. yaptığın zaman hem X hem Y hem de Z metotlarına erişebilirsn.
+
+
+class A : C
+{
+    public void X() {}
+}
+
+class B : A
+{
+    public void Y() {}
+}
+
+class C 
+{
+public void Z() {}
+}
+
+Polimorfizm Türleri : Dinamik Polimorfizm ve Statik Polimorfizm olarak ikiye ayrılır.
+Statik Polimorfizm : 
+Derleme zamanında sergilenen polimorfizm'dir. Hangi fonksiyonun çağrılacağına derleme zamanında karar verilir.Static polimorfizm deyince aklımıza Metot Overloading terimi gelmelidir.
+Metot Overloading; aynı isimde birbirinden farklı imzalara sahip olan metotların tanımlanmasıdır. Ya da başka deyişle bir isme birden fazla farklı türde metot yüklemektir. Haliyle burada 
+bir metodun birden fazla formunun olması polimorfizm'ken, bunlardan kullanılacak olanın derleme zamanında bilinmesi statik polimorfizm olarak nitelendirilmektedir.
+Overload edilmiş metotlardan daha derleme zamanında hangisinin kullanılıcağını bilmemize statik polimorfizm denir.
+
+//Main
+Matematik m = new();
+m.Topla(4,5,6)  //Hangi metotun kullanılıcağını derleme zamanında biliyorum. Bu yüzden bu statik polimorfizmdir.
+class Matematik
+{
+    public long Topla(int s1, int s2)
+        => s1+ s2;
+    public long Topla(int s1, int s2, int s3)
+        => s1+ s2+ s3;
+    public long Topla(int s1, int s2, int s3, int s4)
+        => s1+s2+s3+s4;
+}
+
+
+
+
+Dinamik Polimorfizm : Dinamik polimorfizm; çalışma zamanında sergilenen polimorfizm'dir. Yani hangi fonksiyonun çalışacağına run time'da karar verilir.
+C#'da dinamik polimorfizm deyince akla Metot Override gelmektedir.
+Tür Dönüşüm Operatörleri : 
+Cast operatörü : 
+as operatörü : 
+is operatörü : 
 
 
 
@@ -495,41 +852,199 @@ Nerede Kullanılır : Singleton desing patternda kullanılır.
 
 
 
+Nesneler Arası İlişki Türleri (Association-Aggregation-Composition) : 
+Nasılsa insanlar arasında bir bağ varsa nesneler arasında da bir bağ vardır. Bizim bu bağları kategorize etmemiz nesneler arası ilişki türlerini ortaya çıkartır. Biz burada nesnelerin
+aralarındaki türlere isimler vereceğiz. 
+Nesneler arasında terminolojik olarak nitelendirilebilir ilişki türleri mevcuttur. Bu ilişkiler; kalıtım, referans yahut soyutlama gibi durumların getirisi olan mantıksal izahatlerdir.
+
+Nesneler arası ilişki türleri : is - a ilişkisi   , has - a ilişkisi    , can - do ilişkisi    
+is - a ilişkisi : 
+is - a ilişkisi tamamiyle kalıtımla alakalıdır. C# programlama dilinde, iki sınıf arasında : operatörü ile gerçekleştirilen kalıtım neticesinde ortaya bir is - a ilişkisi çıkmaktadır.
+
+class Car 
+{
+
+}
+class Opel
+{
+
+}
+Opel is a Car. Bu yüzden is - a ilişkisi denir.
+
+
+has - a ilişkisi : 
+Bir sınıfın başka bir sınıfın nesnesine dair sahiplik ifadesinde bulunan ilişkidir. Bir yandan kompozisyon/composition ilişkisi de denmektedir.
+class Car 
+{
+
+}
+class Opel
+{
+    Motor motor;
+}
+class Motor
+{
+
+}
+
+Opel is a Car. Ve Opel has a Motor 
+
+
+can - do ilişkisi : 
+İnterface yapılanmasının getirisi olan bir ilişki türüdür. 
+interface IAraba 
+{
+    void Gazla();
+    void Frenle();
+}
+class Opel : IAraba
+{
+    public void Gazla()
+    {
+
+    }
+    public void Frenle()
+    {
+    
+    }
+}
+Opel sınıfı ile IAraba arasında can-do ilişkisi vardır.
+
+
+Association, sınıflar arasındaki bağlantının zayıf biçimine verilen addır. Bu bağlantı oldukça gevşektir. Yani, sınıflar kendi aralarında ilişkilidir lakin birbirlerinden de bağımsızdırlar!
+Parça - bütün ilişkisi yoktur! 
+Örneğin :
+Bir otobüsteki yolcular ile otobüs arasındaki ilişki Association'dır.Sonuçta hepsi aynı yöne gitmektedir.Lakin bir yolcu indiğinde bu durum otobüsün ve diğer yolcuların durumunu değiştirmez!
+
+
+
+Aggregation-Composition : 
+Aggregation
+Sahip olunan nesnenin, sahip olan nesneden bağımsız bir şekilde var olabilmesi durumudur.
+
+Composition
+Sahip olunan nesnenin, sahip olan nesneden bağımsız bir şekilde var olamaması durumudur:
+
+Misal; 
+Bir arabayı düşünürsek eğer, bu arabanın tekeri ile vitesi arasındaki ilişki Aggregation ya da Composition açısından değerlendirirsek eğer; 
+
+
+Bu araba teker olmadan olmaz lakin teker araba olmadan da kendi başına ayrı olarak var olabileceğinden dolayı araba ile teker arasındaki ilişki Aggregation'dır.
+
+Benzer mantıkla bu araba vites olamdan da olmaz lakin vites araba olmadan bir anlam ifade etmeyeceğinden dolayı araba ile vites arasındaki ilişki Composition'dır.
+
+Başka bir misal;
+Bir kitap sayfalardan ve kapaktan meydana gelmektedir. Kitapla sayfa ve kapak arasındaki ilişkiyi değerlendirirsek eğer;
+
+Kitabın herhangi bir sayfasının yırtılması işlevselliğini kaybettireceği aşikar. Lakin her bir sayfa başlı başına bağımsız bir şekilde var olabileceğinden dolayı kitapla sayfa arasındaki 
+ilişki Aggregation'dır.
+
+Kapak ise kitapla bir anlam kazanmaktadır ve kitabın dışında bağımsız bir şekilde var olmasının bir izahı yoktur. Dolayısıyla kitapla kapak arasındaki ilişki Composition'dır.
 
 
 
 
+Readonly Keywordü :Bir class içerisinde tanımlanmış olan değişkenin yahut referansın sadece okunabilir olmasını sağlayan bir keyword'dür.
+readonly keyword'u ile işaretlenmiş olan referansların değerleri ya tanımlama noktasında ya da constructor'da verilebilir.
+
+Const ile arasındaki fark : Const tanımlanırken değer vermek zorundayız fakat readonly constructor ile de tanımlama noktasında da değer atayabiliriz. Const statiktir ayrıca.
+
+
+Sealed Keywordü : Bir sınıfın miras vermesini yani başka bir sınıf tarafından miras olarak alınmasını engelleyen bir keyworddür. 
+sealed class X
+{
+
+}
+Bu şekilde kullanılır.
+Sadece sınıflarda ve sadece ovverride edilmiş fonksiyonlarda kullanılır.Recordlarda da kullanılabilir.
+Kalıtımsal durumlarda atalardan gelen ve birinci derece sınıf tarafından override edilmiş metotların alt sınıflar tarafından override edilmemesi için kullanabiliriz.
+
+class A 
+{
+    public virtual void X() {}
+}
+
+class B : A
+{
+    sealed public override void X() {}
+}
+
+class C : B
+{
+    public override void X() {}  //biz üstteki metotu sealed ile işaretlediğimiz için override edemeyiz.
+}
+
+
+Mikro çapta da olsa bir sınıf eğer sealed ile işaretlendiyse ufak bir performans artışı sağlar çünkü derleyici sealed ile işaretlenen clasın miras alınmayacağını bilir. Singletonda kullanılır.
 
 
 
 
+Partial Yapılanmalar : Bir class'ın,struct'ın yahut interface'in aynı yahut farklı dosyalarda birden fazla parçasının tasarlanmasını lakin bu parçaların özünde bir bütün olarak kullanılmasını
+sağlayan, kodun daha organize ve kolay okunabilirliğini arttıran özelliklerdir.
+Fiziksel olarak farklı olan bu tanımların birbirlerinin parçaları olabilmesi için aynı namespace içerisinde, aynı isimde ve aynı yapıda olmaları gerekmektedir.
+
+Partial yapılanmaları genellikle aşağıdaki amaçlar doğrultusunda tercih etmekteyiz;
+Kod Bölümleme : Büyük ve karmaşık yapıdaki sınıfları daha okunabilir ve düzenlenebilir parçalara bölmek için kullanılabilir.
+İş Bölümü : Ekiplerin, aynı sınıfın farklı kısımlarını aynı anda geliştirebilmeleri için kullanılabilir.
+Code Generator(yazılım geliştirme süreçlerini hızlandırmak, tekrarlayan kod yazımını önlemek ve otomasyon sağlamak amacıyla kullanılan araç veya mekanizmalara verilen genel addır.) :
+Code Generator sistemleri tarafından yazdığınız kodun ezilmemesi için kullanılabilir.
+
+Partial Yapılanmalarda Kısıtlamalar Nelerdir ? 
+Parça olması amaçlanan tüm yapılar partial keyword'ü ile işaretlenmelidir.
+İç içe partial türler kullanılabilir.
+Tüm partial yapılar aynı namespace altında bulunmalıdır. Farklı projeler yahut modüllere yayılamaz!
+Partial olan bir yapının tüm parçalarının türleri ve isimleri aynı olmak zorundadır.
+
+
+Partial Olabilen Yapılar :
+Struct 
+Class
+Record
+Abstract class
+Interface
+
+Partial Metotlar Nelerdir? : Partial yapılar partial metotlar barındırabilirler.
+Partial metotlar, sınıfın bir parçasında geliştiricinin metot bildiriminde bulunmasını sağlar. Başka bir parçasında ise diğer geliştirici tarafından bu metot tanımlanabilir.
+Bunun yararlı olduğu iki senaryo vardır;
 
 
 
+Template Code : Geliştirilen kodda metotlara dair bir şablon oluşturmak için kullanılabilir. Bu şablonların uygulanıp uygulanmayacağına dair geliştiricinin karar vermesine olanak tanınır.
+Eğer şablonu tanımlanan metot uygulanmazsa derleyici tarafından metodun imzası ve o metoda dair yapılan tüm çağrılar/tetiklemeler kaldırılır.
+Yani anlayacağınız, partial bir metot tanımlandığı taktirde ister uygulansın ister uygulanmasın herhangi bir farklı noktadan çağrılabilir/tetiklenebilir. Ancak uygulanmadığı taktirde 
+herhangi bir derleme yahut çalışma zamanı hatası alınmayacaktır.
 
 
+Source Generator : Source generator sistemleri ile sınıflarda tanımlanmış olan partial metot imzalarına karşılık gövdeler oluşturulabilir. Geliştirici, uygulanacak metodun partial bir şekilde
+şablonunu ekledikten sonra source generator derleme sırasında bu metodun uygulamasını sağlar.
+Tabi geliştirici isterse, bu metotların govdeleri source generator tarafından üretilmeden önce ya da bir başka deyişle bu metotlar uygulanmadan önce başka bir noktada çağırabilir.
 
 
+Partial metotlarla ilgili aşağıdaki ekstra bilgileri bilmekte fayda vardır;
 
+partial metotların runtime'da var olacağı kesin değildir. Eğer implementation edilmedilerse partial metotlar derleme sırasında yok sayılırlar.
 
+Yukarıdaki durumdan dolayı partial metotlar delegate'ler ile temsil edilemezler.
 
+partial metotlar;
 
+ancak partial yapılar içerisinde tanımlanabilirler.
 
+geri dönüş tipleri her daim void olmak zorundadır.
 
+static veya generic olabilirler.
 
+out parametresi alamazlar lakin ref parametresi alabilirler.
 
+extern ve virtual olamazlar.
 
+Aynı class'lar da olduğu gibi partial metodun hem tanımı hem de gövdesi partial ile işaretlenmelidir.
 
+Bir metot imzasına karşılık tanım ve gövde olabilir.
 
-
-
-
-
-
-
-
-
-
+Eğer ki partial metotlar başka bir metot tarafından çağrılırlarsa compiler tarafından var oldukları bilinecektir
+yok eğer çağrılmazlarsa compiler derleme aşamasında ilgili metodu hiç görmeyecektir.
 
 
 
