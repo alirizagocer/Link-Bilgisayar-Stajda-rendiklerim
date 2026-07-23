@@ -1053,6 +1053,149 @@ yok eğer çağrılmazlarsa compiler derleme aşamasında ilgili metodu hiç gö
 
 
 
+Abstraction : Lazım olan durumlara karşı sadece gerekli şeyleri görmemiz için soyutlama yaparız. Masamızda sadece o gün çalışıcağımız dersin kitaplarını tutmak diğerlerini kitaplığa 
+kaldırmak gibi. Yazılımda da bir işlem yapıcakken ihtiyacımız olmayan metotları soyutlayarak o an işimize yarayan metotları gözümüzün önünde tutabilmek için bize bir fayda sağlar. 
+Abstraction, bir sınıfın member'larından ihtiyaç noktasında alakalı olanları gösterip, alakasız olmayanları göstermemek demek oluyor.Abstraction interface ve abstract class ile doğrudan
+direkt bir alakası yoktur. Sadece interface ve abstract classlar diğer yapılara göre daha rahat abstraction uygulanır.
+Abstraction, bir sınıfın belirli bir davranışa sahip olduğunun garantisini sağlamaktadır.
+Abstraction'ın Ana Hedefi Nedir? :  Bir nesnenin yalnızca o anki duruma göre ilgili davranışları gösterilmekte, gereksiz ayrıtıları gizlenmektedir
+
+
+Abstract Class : Abstract Class, özünde kalıtımsal davranış göstererek bir sınıf üzerinde implementasyonlar yapmamızı sağlayan özel bir yapılanmadır!
+Abstract class içerisinde normal memberlar tanımlanabileceği gibi kalıtımsal olarak bu abstract classı uygulayan sınıflara zoraki olarak uygulattırılacak member imzaları da tanimlanabilir.
+abstract class MyClass
+{
+    public void X()
+    {
+    
+    }
+    public void Y()
+    {
+    
+    }
+}
+
+Abstract Class İle Nesne Arasındaki İlişki : Abstract Class'lar soyut yapılanmalar olduğu için yapısal olarak iradeli bir şekilde(new operatörü ile vs.) nesne üretilebilir bir tür değildir!
+
+new MyClass();
+
+Yani bu şekilde bir abstract class'tan nesne üretmeye çalışmak mümkün değildir!
+Ama bu abstract class türündenbir nesne hiçbir zaman olamaz anlamına gelmemektedir.
+Kalıtımsal olarak bir abstract class herhangi bir sınıfa miras verdiği taktirde buradaki davranış şöyle olacaktır;
+abstract class MyClass
+{
+
+}
+class MyClass2 : MyClass
+{
+
+}
+
+Yukarıdaki gibi kalıtımsal durumun söz konusu olduğu durumlarda
+
+new MyClass2();
+
+komutu ile MyClass2 isimli sınıftan bir nesne üretilirse eğer burada kalıtımsal hiyerarşinin gereği olarak abstract class'ın da dahil normal class'ın nesneleri üretilecektir.
+İnterface ile arasındaki fark!!!!
+Myclass m = new Myclass2();         //Bu şekilde abstract class kalıtım verdiği sınıfı referans da edebiliri duruma gelebiliyor.
+
+abstract class MyAbstractClass
+{
+    int a;
+
+    public void X()
+    {
+    
+    }
+    public int MyProperty { get; set; }
+    abstract public void Z();
+}
+
+class MyClass : MyAbstractClass 
+{
+    public override void Z()
+    {
+    
+    }
+}
+
+Burada hangi metot imzası oldu hangi metodun gövdesini oluşturucam takip etmek zor olduğu için gelip CTRL + . + ENTER       yaparsak direkt otomatik implemente edilmiş olacaktır.
+
+KRİTİK : Abstract classlar da sonuçta bir class olduğu için ve bir class sadece tek 1 classdan miras alabildiği için abstract class implemente yöntemi olmasına rağmen bir class sadece 1 adet 
+abstract classtan miras alabilir fakat interfacelerde sınır yok. 
+Abstract olarak işaretlenen yapıların erişlm belirleyicilerinin public olması zorunludur.
+
+Bir abstract class, başka bir abstract class'a miras verebilir.
+Burada dikkat ederseniz bir abstract class'ın başka bir abstract class'a miras vermesi implementation olarak nitelendirilmemektedir.
+Bu düpedüz bir kalıtımdır. Çünkü abstract class'lar içlerinde abstract olarak işaretlenmiş olan yapıları zoraki olarak sadece kendilerini uygulayan sınıflara uygulattirırlar, abstract 
+class'lara değil! 
+
+
+
+
+
+
+İnterface nedir : Interfaceler referans türlü değişkenlerdir. Mimari için bize katkı verir.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
